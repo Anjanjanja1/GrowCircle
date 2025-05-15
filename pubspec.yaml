@@ -31,6 +31,11 @@ dependencies:
   google_sign_in: ^6.1.4
   image_picker: ^1.0.4
 
+  # Geolocator 
+  geolocator: ^14.0.0
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+
  # sign_in_with_apple: ^5.0.0
 
   # The following adds the Cupertino Icons font to your application.
