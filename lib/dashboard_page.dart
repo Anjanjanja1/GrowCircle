@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'offer_page.dart';
+import 'main_layout.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -9,23 +11,25 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   double searchRadius = 10.0;
+  int currentIndex = 0; // Seitenindex
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // TODO: Icon einfügen!
-        automaticallyImplyLeading: false, // Zurück-Pfeil wird unterdrückt
-        title: const Text('GrowCircle'),
-        backgroundColor: Colors.green,
-        actions: const [
-          Icon(Icons.settings),
-          SizedBox(width: 12),
-          Icon(Icons.person),
-          SizedBox(width: 12),
-        ],
-      ),
-      body: SingleChildScrollView(
+    return MainLayout(
+      currentIndex: 0,
+      // appBar: AppBar(
+      //   // TODO: Icon einfügen!
+      //   automaticallyImplyLeading: false, // Zurück-Pfeil wird unterdrückt
+      //   title: const Text('GrowCircle'),
+      //   backgroundColor: Colors.green,
+      //   actions: const [
+      //     Icon(Icons.settings),
+      //     SizedBox(width: 12),
+      //     Icon(Icons.person),
+      //     SizedBox(width: 12),
+      //   ],
+      // ),
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,33 +127,6 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: 80),
           ],
         ),
-      ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Suche"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: "Anbieten",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outline),
-            label: "Chat",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: "Favoriten",
-          ),
-        ],
-        onTap: (index) {
-          // Prototyp: kein Navigation nötig, aber du kannst hier später Seiten verknüpfen
-        },
       ),
     );
   }
