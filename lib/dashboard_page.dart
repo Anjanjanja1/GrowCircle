@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'offer_page.dart';
 import 'main_layout.dart';
+import 'dummy_data.dart';
+import 'dart:io';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -26,31 +28,22 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
       return;
     }
 
-    permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return;
-      }
+      if (permission == LocationPermission.denied) return;
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
+    if (permission == LocationPermission.deniedForever) return;
 
     Position position = await Geolocator.getCurrentPosition();
-    setState(() {
-      _currentPosition = position;
-    });
+    setState(() => _currentPosition = position);
   }
 
   double _radiusToZoom(double radiusKm) {
@@ -177,6 +170,32 @@ class _DashboardPageState extends State<DashboardPage> {
                                         size: 36,
                                       ),
                                     ),
+                                    ...dummyPlants.map(
+                                      (plant) => Marker(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        point: plant.standort,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(6),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                blurRadius: 6,
+                                                offset: Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Icon(
+                                            Icons.local_florist,
+                                            color: Colors.green,
+                                            size: 28,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
@@ -187,27 +206,23 @@ class _DashboardPageState extends State<DashboardPage> {
                   Positioned(
                     right: 16,
                     bottom: 16,
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Column(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () => _updateZoom(1),
                           ),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () => _updateZoom(1),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.remove),
-                                onPressed: () => _updateZoom(-1),
-                              ),
-                            ],
+                          IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () => _updateZoom(-1),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
               ],
@@ -248,7 +263,7 @@ class _DashboardPageState extends State<DashboardPage> {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 6,
+              itemCount: dummyPlants.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
@@ -256,6 +271,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 childAspectRatio: 3 / 4,
               ),
               itemBuilder: (context, index) {
+                final plant = dummyPlants[index];
                 return Container(
                   decoration: BoxDecoration(
                     color: Colors.green.shade100,
@@ -271,16 +287,34 @@ class _DashboardPageState extends State<DashboardPage> {
                               top: Radius.circular(12),
                             ),
                           ),
-                          child: const Center(
-                            child: Icon(Icons.local_florist, size: 40),
-                          ),
+                          child:
+                              plant.bildPfad != null
+                                  ? (plant.bildPfad!.startsWith('assets/')
+                                      ? Image.asset(
+                                        plant.bildPfad!,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      )
+                                      : Image.file(
+                                        File(plant.bildPfad!),
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return const Center(
+                                            child: Icon(Icons.broken_image, size: 40, color: Colors.blueGrey),
+                                          );
+                                        },
+                                      ))
+                                  : const Center(
+                                    child: Icon(Icons.local_florist, size: 40),
+                                  ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
                         child: Text(
-                          "Pflanze ${1}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          plant.titel,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
