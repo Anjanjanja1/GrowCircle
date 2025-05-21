@@ -12,6 +12,7 @@ class DummyPlant {
   final LatLng standort;
   final String benutzerId;
   final String? bildPfad;
+  bool? istFavorit;
 
   DummyPlant({
     required this.titel,
@@ -22,6 +23,7 @@ class DummyPlant {
     required this.standort,
     required this.benutzerId,
     this.bildPfad,
+    this.istFavorit = false,
   });
 }
 

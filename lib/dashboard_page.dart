@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'offer_page.dart';
 import 'main_layout.dart';
 import 'dummy_data.dart';
+import 'plant_detail_page.dart';
 import 'dart:io';
 
 class DashboardPage extends StatefulWidget {
@@ -92,6 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return MainLayout(
       currentIndex: 0,
+      child: SafeArea(
       // appBar: AppBar(
       //   // TODO: Icon einfügen!
       //   automaticallyImplyLeading: false, // Zurück-Pfeil wird unterdrückt
@@ -146,6 +147,19 @@ class _DashboardPageState extends State<DashboardPage> {
                                       InteractiveFlag.pinchZoom |
                                       InteractiveFlag.drag,
                                 ),
+                                onPositionChanged: (
+                                  MapPosition position,
+                                  bool hasGesture,
+                                ) {
+                                  if (hasGesture && position.zoom != null) {
+                                    setState(() {
+                                      _currentZoom = position.zoom!;
+                                      searchRadius = _zoomToRadius(
+                                        _currentZoom,
+                                      );
+                                    });
+                                  }
+                                },
                               ),
                               children: [
                                 TileLayer(
@@ -272,52 +286,73 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               itemBuilder: (context, index) {
                 final plant = dummyPlants[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade200,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlantDetailPage(plant: plant),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade200,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
+                              ),
                             ),
+                            child:
+                                plant.bildPfad != null
+                                    ? (plant.bildPfad!.startsWith('assets/')
+                                        ? Image.asset(
+                                          plant.bildPfad!,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        )
+                                        : Image.file(
+                                          File(plant.bildPfad!),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          errorBuilder: (
+                                            context,
+                                            error,
+                                            stackTrace,
+                                          ) {
+                                            return const Center(
+                                              child: Icon(
+                                                Icons.broken_image,
+                                                size: 40,
+                                                color: Colors.blueGrey,
+                                              ),
+                                            );
+                                          },
+                                        ))
+                                    : const Center(
+                                      child: Icon(
+                                        Icons.local_florist,
+                                        size: 40,
+                                      ),
+                                    ),
                           ),
-                          child:
-                              plant.bildPfad != null
-                                  ? (plant.bildPfad!.startsWith('assets/')
-                                      ? Image.asset(
-                                        plant.bildPfad!,
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                      )
-                                      : Image.file(
-                                        File(plant.bildPfad!),
-                                        fit: BoxFit.cover,
-                                        width: double.infinity,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return const Center(
-                                            child: Icon(Icons.broken_image, size: 40, color: Colors.blueGrey),
-                                          );
-                                        },
-                                      ))
-                                  : const Center(
-                                    child: Icon(Icons.local_florist, size: 40),
-                                  ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          plant.titel,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            plant.titel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -326,6 +361,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
+    ),
     );
   }
 }
