@@ -94,18 +94,6 @@ class _DashboardPageState extends State<DashboardPage> {
       currentIndex: 0,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            // TODO: Icon einfügen!
-            automaticallyImplyLeading: false, // Zurück-Pfeil wird unterdrückt
-            title: const Text('GrowCircle'),
-            backgroundColor: Colors.green,
-            actions: const [
-              Icon(Icons.settings),
-              SizedBox(width: 12),
-              Icon(Icons.person),
-              SizedBox(width: 12),
-            ],
-          ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(12),
             child: Column(

@@ -3,6 +3,7 @@ import 'dashboard_page.dart';
 import 'offer_page.dart';
 import 'search_page.dart';
 import 'inbox_page.dart';
+import 'profile_page.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -15,9 +16,8 @@ class MainLayout extends StatelessWidget {
   });
 
   void _onTabTapped(BuildContext context, int index) {
-    if (index == currentIndex) return;
-
     Widget targetPage;
+
     switch (index) {
       case 0:
         targetPage = DashboardPage();
@@ -29,21 +29,65 @@ class MainLayout extends StatelessWidget {
         targetPage = OfferPage();
         break;
       case 3:
-        targetPage = InboxPage(); // <--- Hier die neue Seite
+        targetPage = InboxPage();
         break;
       default:
-        targetPage = DashboardPage(); // später anpassen
+        targetPage = DashboardPage();
     }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => targetPage),
-    );
+    // Nur navigieren, wenn Zielseite anders ist
+    if (index != currentIndex) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => targetPage),
+      );
+    } else {
+      // Wenn man sich schon auf ChatPage befindet trotzdem zurück zur Root-Seite navigieren
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => targetPage),
+        (route) => false,
+      );
+    }
   }
 
+  // App-Bar und Navigation-Bar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('GrowCircle'),
+        backgroundColor: Colors.green,
+        leading: IconButton(
+          icon: const Icon(Icons.eco), // TODO: Icon ändern!
+          onPressed: () {
+            // gehe zum Dashboard
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardPage()),
+            );
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.help),
+            onPressed: () {
+              // TODO: Hilfe Seite öffnen
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              // gehe zur Profil Seite
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -71,7 +115,6 @@ class MainLayout extends StatelessWidget {
     );
   }
 }
-
 
 
   // onTap: (index) {

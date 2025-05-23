@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'main_layout.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -26,9 +27,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Chat"), backgroundColor: Colors.green),
-      body: Column(
+    return MainLayout(
+      currentIndex: 3, // Seitenindex
+      child: Column(
         children: [
           Expanded(
             child: ListView.builder(
