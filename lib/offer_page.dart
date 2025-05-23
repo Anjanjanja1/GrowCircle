@@ -39,9 +39,9 @@ class _OfferPageState extends State<OfferPage> {
   Future<void> _getCoordinatesFromAddress() async {
     final address = _addressController.text.trim();
     if (address.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Bitte Adresse eingeben")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Bitte Adresse eingeben")));
       return;
     }
 
@@ -79,9 +79,9 @@ class _OfferPageState extends State<OfferPage> {
     final double? lat = double.tryParse(latStr);
     final double? lng = double.tryParse(lngStr);
     if (lat == null || lng == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Ungültige Koordinaten")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Ungültige Koordinaten")));
       return;
     }
 
@@ -106,15 +106,15 @@ class _OfferPageState extends State<OfferPage> {
       _image = null;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Pflanze hinzugefügt!")),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Pflanze hinzugefügt!")));
   }
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      currentIndex: 2,
+      currentIndex: 2, // Seitenindex
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -130,9 +130,14 @@ class _OfferPageState extends State<OfferPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
-                  child: _image == null
-                      ? const Icon(Icons.camera_alt, size: 40, color: Colors.grey)
-                      : Image.file(_image!, fit: BoxFit.cover),
+                  child:
+                      _image == null
+                          ? const Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                            color: Colors.grey,
+                          )
+                          : Image.file(_image!, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -145,7 +150,9 @@ class _OfferPageState extends State<OfferPage> {
               controller: _titelController,
               decoration: InputDecoration(
                 hintText: 'z.B. Monstera Ableger',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -155,12 +162,22 @@ class _OfferPageState extends State<OfferPage> {
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _kategorie,
-              items: ['Zimmerpflanze', 'Kräuter', 'Ableger', 'Samen', 'Gartenpflanze', 'Sonstige']
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
+              items:
+                  [
+                        'Zimmerpflanze',
+                        'Kräuter',
+                        'Ableger',
+                        'Samen',
+                        'Gartenpflanze',
+                        'Sonstige',
+                      ]
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .toList(),
               onChanged: (val) => setState(() => _kategorie = val!),
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -173,9 +190,12 @@ class _OfferPageState extends State<OfferPage> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _lichtbedarf,
-                    items: ['Wenig', 'Mittel', 'Viel']
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
+                    items:
+                        ['Wenig', 'Mittel', 'Viel']
+                            .map(
+                              (e) => DropdownMenuItem(value: e, child: Text(e)),
+                            )
+                            .toList(),
                     onChanged: (val) => setState(() => _lichtbedarf = val!),
                     decoration: const InputDecoration(
                       labelText: '☀️ Lichtbedarf',
@@ -187,9 +207,12 @@ class _OfferPageState extends State<OfferPage> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _pflanzenstadium,
-                    items: ['Ableger', 'Jungpflanze', 'Ausgewachsen']
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
+                    items:
+                        ['Ableger', 'Jungpflanze', 'Ausgewachsen']
+                            .map(
+                              (e) => DropdownMenuItem(value: e, child: Text(e)),
+                            )
+                            .toList(),
                     onChanged: (val) => setState(() => _pflanzenstadium = val!),
                     decoration: const InputDecoration(
                       labelText: '🌱 Pflanzenstadium',
@@ -210,7 +233,9 @@ class _OfferPageState extends State<OfferPage> {
               maxLines: 3,
               decoration: InputDecoration(
                 hintText: "Beschreibe deine Pflanze (max. 140 Zeichen)",
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -225,7 +250,9 @@ class _OfferPageState extends State<OfferPage> {
                   icon: const Icon(Icons.search),
                   onPressed: _getCoordinatesFromAddress,
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 12),

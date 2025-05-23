@@ -15,10 +15,6 @@ class ChatListPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      /*   appBar: AppBar(
-        title: const Text('Deine Chats'),
-        backgroundColor: Colors.green,
-      ),*/
       body: ListView.builder(
         itemCount: dummyChats.length,
         itemBuilder: (context, index) {

@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      currentIndex: 4, // Index für "Favoriten" oder "Profil"
+      currentIndex: 4, // Seitenindex
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
