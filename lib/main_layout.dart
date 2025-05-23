@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
 import 'offer_page.dart';
+import 'search_page.dart';
+
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -19,6 +21,9 @@ class MainLayout extends StatelessWidget {
     switch (index) {
       case 0:
         targetPage = DashboardPage();
+        break;
+        case 1:
+        targetPage = SearchPage();
         break;
       case 2:
         targetPage = OfferPage();

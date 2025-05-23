@@ -7,6 +7,8 @@ import 'main_layout.dart';
 import 'dummy_data.dart'; //DUMMY LIST
 
 class OfferPage extends StatefulWidget {
+  const OfferPage({super.key});
+
   @override
   _OfferPageState createState() => _OfferPageState();
 }
@@ -153,7 +155,7 @@ class _OfferPageState extends State<OfferPage> {
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _kategorie,
-              items: ['Zimmerpflanze', 'Kräuter', 'Gartenpflanze', 'Sonstige']
+              items: ['Zimmerpflanze', 'Kräuter', 'Ableger', 'Samen', 'Gartenpflanze', 'Sonstige']
                   .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                   .toList(),
               onChanged: (val) => setState(() => _kategorie = val!),
