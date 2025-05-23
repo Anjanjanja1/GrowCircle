@@ -6,6 +6,7 @@ import 'main_layout.dart';
 import 'dummy_data.dart';
 import 'plant_detail_page.dart';
 import 'dart:io';
+import 'inbox_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -361,7 +362,39 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-    ),
+
+      // Bottom Navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Suche"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline),
+            label: "Anbieten",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail_outline),
+            label: "Chat",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            label: "Favoriten",
+          ),
+        ],
+        onTap: (index) {
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const InboxPage()),
+            );
+          }
+          // Hier kannst du später weitere Navigationen für andere Indices ergänzen
+        },
+      ),
     );
   }
 }
