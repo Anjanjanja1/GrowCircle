@@ -103,3 +103,49 @@ final List<DummyPlant> dummyPlants = [
     bildPfad: 'assets/images/plants/efeutute.jpg',
   ),
 ];
+
+// Dummy Pflanzen Profil - Meine Angebote
+final List<DummyPlant> dummyOfferPlants = [
+  DummyPlant(
+    titel: 'Gummibaum',
+    kategorie: 'Zimmerpflanze',
+    lichtbedarf: 'Mittel',
+    pflanzenstadium: 'Ausgewachsen',
+    beschreibung:
+        'Robust und wunderbar anspruchslos - verzeiht einem wirklich alles 😄',
+    standort: LatLng(47.0540, 15.2351),
+    benutzerId: 'u3',
+    bildPfad: 'assets/images/plants/gummibaum.jpg',
+  ),
+  DummyPlant(
+    titel: 'Amaryllis',
+    kategorie: 'Zimmerpflanze',
+    lichtbedarf: 'Mittel',
+    pflanzenstadium: 'Samen',
+    beschreibung:
+        'Habe die Samen von meiner eigenen Pflanze, die rot blüht. Tausche gerne gegen Kräuter.',
+    standort: LatLng(47.0540, 15.2351),
+    benutzerId: 'u3',
+    bildPfad: 'assets/images/plants/amaryllis.jpg',
+  ),
+  DummyPlant(
+    titel: 'Banane',
+    kategorie: 'Exotisch',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Winterhart bis -15°C',
+    standort: LatLng(47.0540, 15.2351),
+    benutzerId: 'u3',
+    bildPfad: 'assets/images/plants/banane.jpg',
+  ),
+  DummyPlant(
+    titel: 'Feigenbaum',
+    kategorie: 'Mediterran',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Habe den Baum aus dem Kroatien-Urlaub mitgenommen!',
+    standort: LatLng(47.0540, 15.2351),
+    benutzerId: 'u3',
+    bildPfad: 'assets/images/plants/feigenbaum.jpg',
+  ),
+];
