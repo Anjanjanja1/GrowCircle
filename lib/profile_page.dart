@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'main_layout.dart';
+import 'plant_detail_page.dart';
 import 'dummy_data.dart'; //DUMMY LIST
 
 class ProfilePage extends StatefulWidget {
@@ -137,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 6, // Anzahl Angebote
+              itemCount: dummyOfferPlants.length, // Anzahl Angebote
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
@@ -145,34 +146,74 @@ class _ProfilePageState extends State<ProfilePage> {
                 childAspectRatio: 3 / 4,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade200,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
+                final plant = dummyOfferPlants[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlantDetailPage(plant: plant),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade200,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
+                              ),
                             ),
-                          ),
-                          child: const Center(
-                            child: Icon(Icons.local_florist, size: 40),
+                            child:
+                                plant.bildPfad != null
+                                    ? (plant.bildPfad!.startsWith('assets/')
+                                        ? Image.asset(
+                                          plant.bildPfad!,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                        )
+                                        : Image.file(
+                                          File(plant.bildPfad!),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          errorBuilder: (
+                                            context,
+                                            error,
+                                            stackTrace,
+                                          ) {
+                                            return const Center(
+                                              child: Icon(
+                                                Icons.broken_image,
+                                                size: 40,
+                                                color: Colors.blueGrey,
+                                              ),
+                                            );
+                                          },
+                                        ))
+                                    : const Center(
+                                      child: Icon(
+                                        Icons.local_florist,
+                                        size: 40,
+                                      ),
+                                    ),
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          "Pflanze",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            plant.titel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },

@@ -115,22 +115,3 @@ class MainLayout extends StatelessWidget {
     );
   }
 }
-
-
-  // onTap: (index) {
-  //         if (index == 2) {
-  //           // gehe zu Angebot Seite
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => OfferPage()),
-  //           );
-  //         } else {
-  //           setState(() {
-  //             currentIndex = index;
-  //             // Optional: weitere Logik für Tab-Wechsel
-  //           });
-  //         }
-  //       },
-
-      
-      
