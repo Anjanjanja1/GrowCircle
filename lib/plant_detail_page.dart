@@ -190,7 +190,7 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                   const SizedBox(height: 12),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Container(
+                    child: SizedBox(
                       height: 150,
                       child: FlutterMap(
                         options: MapOptions(
