@@ -4,6 +4,7 @@ import 'offer_page.dart';
 import 'search_page.dart';
 import 'inbox_page.dart';
 import 'profile_page.dart';
+import 'help_page.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
@@ -72,7 +73,10 @@ class MainLayout extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.help),
             onPressed: () {
-              // TODO: Hilfe-Seite öffnen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HelpPage()),
+              );
             },
           ),
           IconButton(
@@ -88,7 +92,7 @@ class MainLayout extends StatelessWidget {
       ),
       body: child,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
+        currentIndex: currentIndex >= 0 ? currentIndex : 0, //Used it for the HelpPage -> it is needed to avoid an error
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         onTap: (index) => _onTabTapped(context, index),
