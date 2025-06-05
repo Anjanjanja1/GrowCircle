@@ -57,32 +57,30 @@ class MainLayout extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('GrowCircle'),
         backgroundColor: Colors.green,
-        leading: IconButton(
-          icon: const Icon(Icons.eco), // TODO: Icon ändern!
-          onPressed: () {
-            // gehe zum Dashboard
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DashboardPage()),
-            );
-          },
+        title: Row(
+          children: [
+            Image.asset('assets/images/plants/plant_logo.png', height: 32),
+            const SizedBox(width: 8),
+            const Text(
+              'GrowCircle',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.help),
             onPressed: () {
-              // TODO: Hilfe Seite öffnen
+              // TODO: Hilfe-Seite öffnen
             },
           ),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              // gehe zur Profil Seite
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
               );
             },
           ),
