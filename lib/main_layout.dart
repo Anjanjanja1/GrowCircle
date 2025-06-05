@@ -104,7 +104,7 @@ class MainLayout extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.mail_outline),
-            label: "Chat",
+            label: "Mitteilungen",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
