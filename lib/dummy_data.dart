@@ -51,6 +51,7 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0707, 15.4395), // Zentrum Graz
     benutzerId: 'u1',
     bildPfad: 'assets/images/plants/monstera.jpg',
+    istFavorit: true,
   ),
   DummyPlant(
     titel: 'Basilikum',
@@ -61,6 +62,7 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0750, 15.4500), // Lendplatz
     benutzerId: 'u2',
     bildPfad: 'assets/images/plants/basilikum.jpg',
+    istFavorit: false,
   ),
   DummyPlant(
     titel: 'Aloe Vera',
@@ -71,6 +73,7 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0670, 15.4300), // Jakominiplatz
     benutzerId: 'u1',
     bildPfad: 'assets/images/plants/aloe_vera.jpg',
+    istFavorit: true,
   ),
   DummyPlant(
     titel: 'Minze',
@@ -81,6 +84,7 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0735, 15.4420), // Uni Graz
     benutzerId: 'u2',
     bildPfad: 'assets/images/plants/minze.jpg',
+    istFavorit: true,
   ),
   DummyPlant(
     titel: 'Lavendel',
@@ -91,6 +95,7 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0690, 15.4600), // Murpark
     benutzerId: 'u1',
     bildPfad: 'assets/images/plants/lavendel.jpg',
+    istFavorit: false,
   ),
   DummyPlant(
     titel: 'Efeutute',
@@ -101,6 +106,117 @@ final List<DummyPlant> dummyPlants = [
     standort: LatLng(47.0780, 15.4350), // Hauptbahnhof
     benutzerId: 'u2',
     bildPfad: 'assets/images/plants/efeutute.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Drachenbaum',
+    kategorie: 'Zimmerpflanze',
+    lichtbedarf: 'Mittel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Pflegeleichter Hingucker mit langen, schmalen Blättern.',
+    standort: LatLng(47.0725, 15.4480), // Schlossberg
+    benutzerId: 'u1',
+    bildPfad: 'assets/images/plants/drachenbaum.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Petersilie',
+    kategorie: 'Kräuter',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Ableger',
+    beschreibung: 'Wächst schnell nach – ideal für frische Küche.',
+    standort: LatLng(47.0742, 15.4444), // Stadtpark
+    benutzerId: 'u2',
+    bildPfad: 'assets/images/plants/petersilie.jpg',
+    istFavorit: true,
+  ),
+  DummyPlant(
+    titel: 'Thymian',
+    kategorie: 'Kräuter',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Würzig duftender Küchenklassiker.',
+    standort: LatLng(47.0701, 15.4499), // Murinsel
+    benutzerId: 'u1',
+    bildPfad: 'assets/images/plants/thymian.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Kaktus',
+    kategorie: 'Zimmerpflanze',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Ausgewachsen',
+    beschreibung: 'Mag Sonne und braucht kaum Wasser.',
+    standort: LatLng(47.0682, 15.4381), // Kunsthaus Graz
+    benutzerId: 'u2',
+    bildPfad: 'assets/images/plants/kaktus.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Tomate',
+    kategorie: 'Gartenpflanze',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Trägt bereits kleine Früchte.',
+    standort: LatLng(47.0665, 15.4573), // Augarten
+    benutzerId: 'u1',
+    bildPfad: 'assets/images/plants/tomate.jpg',
+    istFavorit: true,
+  ),
+  DummyPlant(
+    titel: 'Oregano',
+    kategorie: 'Kräuter',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Ausgewachsen',
+    beschreibung: 'Wächst kräftig – ideal für Pizza-Fans!',
+    standort: LatLng(47.0697, 15.4407), // Hauptplatz
+    benutzerId: 'u2',
+    bildPfad: 'assets/images/plants/oregano.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Zimmerlinde',
+    kategorie: 'Zimmerpflanze',
+    lichtbedarf: 'Mittel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Große weiche Blätter, wächst schnell.',
+    standort: LatLng(47.0658, 15.4455), // Jakoministraße
+    benutzerId: 'u1',
+    bildPfad: 'assets/images/plants/zimmerlinde.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Zitronenmelisse',
+    kategorie: 'Kräuter',
+    lichtbedarf: 'Mittel',
+    pflanzenstadium: 'Ableger',
+    beschreibung: 'Beruhigend und lecker im Tee.',
+    standort: LatLng(47.0711, 15.4520), // Griesplatz
+    benutzerId: 'u2',
+    bildPfad: 'assets/images/plants/zitronenmelisse.jpg',
+    istFavorit: true,
+  ),
+  DummyPlant(
+    titel: 'Salbei',
+    kategorie: 'Kräuter',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Ausgewachsen',
+    beschreibung: 'Aromatisch, gut für Hals & Stimme.',
+    standort: LatLng(47.0760, 15.4370), // Messe Graz
+    benutzerId: 'u1',
+    bildPfad: 'assets/images/plants/salbei.jpg',
+    istFavorit: false,
+  ),
+  DummyPlant(
+    titel: 'Chili',
+    kategorie: 'Gartenpflanze',
+    lichtbedarf: 'Viel',
+    pflanzenstadium: 'Jungpflanze',
+    beschreibung: 'Scharfer Genuss direkt vom Balkon.',
+    standort: LatLng(47.0720, 15.4542), // Plabutsch
+    benutzerId: 'u2',
+    bildPfad: 'assets/images/plants/chili.jpg',
+    istFavorit: true,
   ),
 ];
 
@@ -119,7 +235,7 @@ final List<DummyPlant> dummyOfferPlants = [
   ),
   DummyPlant(
     titel: 'Amaryllis',
-    kategorie: 'Zimmerpflanze',
+    kategorie: 'Samen',
     lichtbedarf: 'Mittel',
     pflanzenstadium: 'Samen',
     beschreibung:
@@ -130,7 +246,7 @@ final List<DummyPlant> dummyOfferPlants = [
   ),
   DummyPlant(
     titel: 'Banane',
-    kategorie: 'Exotisch',
+    kategorie: 'Sonstige',
     lichtbedarf: 'Viel',
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Winterhart bis -15°C',
@@ -140,7 +256,7 @@ final List<DummyPlant> dummyOfferPlants = [
   ),
   DummyPlant(
     titel: 'Feigenbaum',
-    kategorie: 'Mediterran',
+    kategorie: 'Sonstige',
     lichtbedarf: 'Viel',
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Habe den Baum aus dem Kroatien-Urlaub mitgenommen!',
