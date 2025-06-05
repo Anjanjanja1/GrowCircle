@@ -4,11 +4,11 @@
 import 'package:latlong2/latlong.dart';
 
 class DummyPlant {
-  final String titel;
-  final String kategorie;
-  final String lichtbedarf;
-  final String pflanzenstadium;
-  final String beschreibung;
+  String titel;
+  String kategorie;
+  String lichtbedarf;
+  String pflanzenstadium;
+  String beschreibung;
   final LatLng standort;
   final String benutzerId;
   final String? bildPfad;

@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'dummy_data.dart';
 import 'main_layout.dart';
 import 'package:geocoding/geocoding.dart';
 
 class PlantDetailPage extends StatefulWidget {
   final DummyPlant plant;
-
   const PlantDetailPage({super.key, required this.plant});
 
   @override
@@ -16,7 +14,18 @@ class PlantDetailPage extends StatefulWidget {
 }
 
 class _PlantDetailPageState extends State<PlantDetailPage> {
+  final String currentUserId = 'u2';
   String? address;
+  final stadiumOptionen = ['Samen', 'Ableger', 'Jungpflanze', 'Ausgewachsen'];
+  final lichtOptionen = ['Viel', 'Mittel', 'Wenig'];
+  final kategorie = [
+    'Zimmerpflanze',
+    'Kräuter',
+    'Ableger',
+    'Samen',
+    'Gartenpflanze',
+    'Sonstige',
+  ];
 
   @override
   void initState() {
@@ -42,6 +51,145 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
         address = "Adresse konnte nicht ermittelt werden";
       });
     }
+  }
+
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text("Eintrag löschen?"),
+            content: const Text(
+              "Bist du sicher, dass du dieses Angebot löschen möchtest?",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text("Abbrechen"),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    dummyPlants.remove(widget.plant); // Or dummyOfferPlants
+                  });
+                  Navigator.of(ctx).pop(); // Close dialog
+                  Navigator.of(context).pop(); // Go back
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Eintrag gelöscht")),
+                  );
+                },
+                child: const Text(
+                  "Löschen",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
+  void _showFullEditSheet() {
+    final titleController = TextEditingController(text: widget.plant.titel);
+    final beschreibungController = TextEditingController(
+      text: widget.plant.beschreibung,
+    );
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            top: 16,
+            left: 16,
+            right: 16,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Eintrag bearbeiten",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Titel'),
+                ),
+                TextField(
+                  controller: beschreibungController,
+                  decoration: const InputDecoration(labelText: 'Beschreibung'),
+                ),
+                DropdownButtonFormField<String>(
+                  value: widget.plant.kategorie,
+                  items:
+                      kategorie.map((cat) {
+                        return DropdownMenuItem(value: cat, child: Text(cat));
+                      }).toList(),
+                  decoration: const InputDecoration(labelText: 'Kategorie'),
+                  onChanged: (value) {
+                    if (value != null)
+                      setState(() => widget.plant.kategorie = value);
+                  },
+                ),
+                DropdownButtonFormField<String>(
+                  value: widget.plant.lichtbedarf,
+                  items:
+                      lichtOptionen.map((licht) {
+                        return DropdownMenuItem(
+                          value: licht,
+                          child: Text(licht),
+                        );
+                      }).toList(),
+                  decoration: const InputDecoration(labelText: 'Lichtbedarf'),
+                  onChanged: (value) {
+                    if (value != null)
+                      setState(() => widget.plant.lichtbedarf = value);
+                  },
+                ),
+                DropdownButtonFormField<String>(
+                  value: widget.plant.pflanzenstadium,
+                  items:
+                      stadiumOptionen.map((stadium) {
+                        return DropdownMenuItem(
+                          value: stadium,
+                          child: Text(stadium),
+                        );
+                      }).toList(),
+                  decoration: const InputDecoration(
+                    labelText: 'Pflanzenstadium',
+                  ),
+                  onChanged: (value) {
+                    if (value != null)
+                      setState(() => widget.plant.pflanzenstadium = value);
+                  },
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.plant.titel = titleController.text;
+                      widget.plant.beschreibung = beschreibungController.text;
+                    });
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Pflanze aktualisiert")),
+                    );
+                  },
+                  child: const Text("Speichern"),
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -105,14 +253,32 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                   ),
                   const SizedBox(height: 20),
 
-                  Center(
-                    child: Text(
-                      widget.plant.titel,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.plant.titel,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      if (widget.plant.benutzerId == currentUserId) ...[
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.orange),
+                          onPressed: () => _showFullEditSheet(),
+                          tooltip: "Bearbeiten",
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => _confirmDelete(context),
+                          tooltip: "Löschen",
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 20),
 
