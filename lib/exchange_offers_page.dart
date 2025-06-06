@@ -131,13 +131,7 @@ class _ExchangeOffersPageState extends State<ExchangeOffersPage> {
                                   chat: ChatThread(
                                     userName: user,
                                     imageUrl: '', // optional: eigenes Bild
-                                    messages: [
-                                      ChatMessage(
-                                        text:
-                                            "Hi $user hier, danke für deine Annahme um meine Pflanze $plant zu tauschen 😊",
-                                        isSentByUser: false,
-                                      ),
-                                    ],
+                                    messages: [],
                                   ),
                                 ),
                           ),
