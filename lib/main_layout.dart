@@ -61,17 +61,33 @@ class MainLayout extends StatelessWidget {
         backgroundColor: Colors.green,
         title: Row(
           children: [
-            Image.asset('assets/images/plants/plant_logo.png', height: 32),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DashboardPage(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/images/plants/plant_logo.png',
+                height: 32,
+              ),
+            ),
             const SizedBox(width: 8),
             const Text(
               'GrowCircle',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Color(0xFFF1FDF5),
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.help),
+            icon: const Icon(Icons.help, color: Color(0xFFF1FDF5)),
             onPressed: () {
               Navigator.push(
                 context,
@@ -80,7 +96,7 @@ class MainLayout extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person, color: Color(0xFFF1FDF5)),
             onPressed: () {
               Navigator.push(
                 context,
@@ -92,7 +108,10 @@ class MainLayout extends StatelessWidget {
       ),
       body: child,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex >= 0 ? currentIndex : 0, //Used it for the HelpPage -> it is needed to avoid an error
+        currentIndex:
+            currentIndex >= 0
+                ? currentIndex
+                : 0, //Used it for the HelpPage -> it is needed to avoid an error
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         onTap: (index) => _onTabTapped(context, index),
