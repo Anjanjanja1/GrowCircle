@@ -60,7 +60,10 @@ class _ChatListPageState extends State<ChatListPage> {
                   children: [
                     CircleAvatar(
                       radius: 28,
-                      backgroundImage: NetworkImage(chat.imageUrl),
+                      backgroundImage:
+                          chat.imageUrl.startsWith('http')
+                              ? NetworkImage(chat.imageUrl)
+                              : AssetImage(chat.imageUrl) as ImageProvider,
                     ),
                     if (isUnread)
                       Positioned(

@@ -37,7 +37,12 @@ class _ChatPageState extends State<ChatPage> {
         title: Row(
           children: [
             const SizedBox(width: 8),
-            CircleAvatar(backgroundImage: NetworkImage(widget.chat.imageUrl)),
+            CircleAvatar(
+              backgroundImage:
+                  widget.chat.imageUrl.startsWith('http')
+                      ? NetworkImage(widget.chat.imageUrl)
+                      : AssetImage(widget.chat.imageUrl) as ImageProvider,
+            ),
             const SizedBox(width: 12),
             Text(
               widget.chat.userName,

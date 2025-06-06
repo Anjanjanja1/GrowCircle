@@ -126,14 +126,18 @@ class _ExchangeOffersPageState extends State<ExchangeOffersPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder:
-                                (_) => ChatPage(
-                                  chat: ChatThread(
-                                    userName: user,
-                                    imageUrl: '', // optional: eigenes Bild
-                                    messages: [],
-                                  ),
-                                ),
+                            builder: (_) {
+                              final existingChat = chatThreads.firstWhere(
+                                (c) => c.userName == user,
+                                orElse:
+                                    () => ChatThread(
+                                      userName: user,
+                                      imageUrl: image,
+                                      messages: [],
+                                    ),
+                              );
+                              return ChatPage(chat: existingChat);
+                            },
                           ),
                         );
                       },
