@@ -227,28 +227,29 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                                   ),
                         ),
                       ),
-                      Positioned(
-                        top: 12,
-                        right: 12,
-                        child: IconButton(
-                          icon: Icon(
-                            widget.plant.istFavorit == true
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color:
-                                widget.plant.istFavorit == true
-                                    ? Colors.red
-                                    : Colors.grey,
-                            size: 30,
+                      if (widget.plant.benutzerId != currentUserId)
+                        Positioned(
+                          top: 12,
+                          right: 12,
+                          child: IconButton(
+                            icon: Icon(
+                              widget.plant.istFavorit == true
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color:
+                                  widget.plant.istFavorit == true
+                                      ? Colors.red
+                                      : Colors.grey,
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                widget.plant.istFavorit =
+                                    !(widget.plant.istFavorit ?? false);
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              widget.plant.istFavorit =
-                                  !(widget.plant.istFavorit ?? false);
-                            });
-                          },
                         ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
