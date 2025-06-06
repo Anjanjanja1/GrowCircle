@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.eco, size: 64, color: Colors.green),
+                Image.asset('assets/images/plants/plant_logo.png', height: 64),
                 const SizedBox(height: 16),
                 const Text(
                   "GrowCircle",
