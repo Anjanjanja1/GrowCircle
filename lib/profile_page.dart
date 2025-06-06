@@ -23,6 +23,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final nameController = TextEditingController();
   final sloganController = TextEditingController();
   final locationController = TextEditingController();
+  final filteredPlants =
+      dummyPlants.where((plant) => plant.benutzerId == 'u2').toList();
 
   bool isEditing = false; // Zustand für Bearbeitbarkeit
 
@@ -138,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: dummyPlants.length, // Anzahl Angebote
+              itemCount: filteredPlants.length, // Anzahl Angebote
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
@@ -146,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 childAspectRatio: 3 / 4,
               ),
               itemBuilder: (context, index) {
-                final plant = dummyPlants[index];
+                final plant = filteredPlants[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(

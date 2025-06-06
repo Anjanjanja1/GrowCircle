@@ -60,7 +60,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Frischer Basilikum für deine Küche',
     standort: LatLng(47.0750, 15.4500), // Lendplatz
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/basilikum.jpg',
     istFavorit: false,
   ),
@@ -82,7 +82,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Ideal für Tee!',
     standort: LatLng(47.0735, 15.4420), // Uni Graz
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/minze.jpg',
     istFavorit: true,
   ),
@@ -104,7 +104,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ausgewachsen',
     beschreibung: 'Perfekt fürs Regal',
     standort: LatLng(47.0780, 15.4350), // Hauptbahnhof
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/efeutute.jpg',
     istFavorit: false,
   ),
@@ -126,7 +126,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Wächst schnell nach – ideal für frische Küche.',
     standort: LatLng(47.0742, 15.4444), // Stadtpark
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/petersilie.jpg',
     istFavorit: true,
   ),
@@ -170,7 +170,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ausgewachsen',
     beschreibung: 'Wächst kräftig – ideal für Pizza-Fans!',
     standort: LatLng(47.0697, 15.4407), // Hauptplatz
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/oregano.jpg',
     istFavorit: false,
   ),
@@ -192,7 +192,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Beruhigend und lecker im Tee.',
     standort: LatLng(47.0711, 15.4520), // Griesplatz
-    benutzerId: 'u2',
+    benutzerId: 'u1',
     bildPfad: 'assets/images/plants/zitronenmelisse.jpg',
     istFavorit: true,
   ),
@@ -226,7 +226,7 @@ final List<DummyPlant> dummyPlants = [
     beschreibung:
         'Robust und wunderbar anspruchslos - verzeiht einem wirklich alles 😄',
     standort: LatLng(47.0540, 15.2351),
-    benutzerId: 'u3',
+    benutzerId: 'u2',
     bildPfad: 'assets/images/plants/gummibaum.jpg',
   ),
   DummyPlant(
@@ -237,7 +237,7 @@ final List<DummyPlant> dummyPlants = [
     beschreibung:
         'Habe die Samen von meiner eigenen Pflanze, die rot blüht. Tausche gerne gegen Kräuter.',
     standort: LatLng(47.0540, 15.2351),
-    benutzerId: 'u3',
+    benutzerId: 'u2',
     bildPfad: 'assets/images/plants/amaryllis.jpg',
   ),
   DummyPlant(
@@ -247,7 +247,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Winterhart bis -15°C',
     standort: LatLng(47.0540, 15.2351),
-    benutzerId: 'u3',
+    benutzerId: 'u2',
     bildPfad: 'assets/images/plants/banane.jpg',
   ),
   DummyPlant(
@@ -257,7 +257,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Habe den Baum aus dem Kroatien-Urlaub mitgenommen!',
     standort: LatLng(47.0540, 15.2351),
-    benutzerId: 'u3',
+    benutzerId: 'u2',
     bildPfad: 'assets/images/plants/feigenbaum.jpg',
   ),
 ];
