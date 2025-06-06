@@ -192,6 +192,15 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
     );
   }
 
+  // holt Benutzername der benutzerId
+  String getBenutzerName(String id) {
+    final user = dummyUsers.firstWhere(
+      (user) => user.id == id,
+      orElse: () => DummyUser(id: id, name: 'Unbekannt'),
+    );
+    return user.name;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainLayout(
@@ -333,7 +342,9 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                           text: "👤 Anbieter*in: ",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        TextSpan(text: widget.plant.benutzerId),
+                        TextSpan(
+                          text: getBenutzerName(widget.plant.benutzerId),
+                        ),
                       ],
                     ),
                   ),

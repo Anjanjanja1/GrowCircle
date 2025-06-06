@@ -41,13 +41,31 @@ class _ProfilePageState extends State<ProfilePage> {
     if (isEditing) {
       // Speichern der Daten
       print("Name: ${nameController.text}");
-      print("Slogan: ${sloganController.text}");
+      print("Über mich: ${sloganController.text}");
       print("Standort: ${locationController.text}");
     }
 
     setState(() {
       isEditing = !isEditing;
     });
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    sloganController.dispose();
+    locationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Startwerte Profil
+    nameController.text = 'Clara Müller';
+    sloganController.text = 'Pflanzensammlerin mit grünem Daumen :)';
+    locationController.text = 'Graz-Jakomini';
   }
 
   void _saveProfile() {
@@ -76,11 +94,20 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 50,
                 backgroundImage:
-                    _profileImage != null ? FileImage(_profileImage!) : null,
+                    _profileImage != null
+                        ? FileImage(_profileImage!)
+                        : const AssetImage(
+                              'assets/images/plants/profile_img.jpg',
+                            )
+                            as ImageProvider,
                 backgroundColor: Colors.green.shade100,
                 child:
-                    _profileImage == null
-                        ? const Icon(Icons.camera_alt, size: 32)
+                    isEditing
+                        ? const Icon(
+                          Icons.camera_alt,
+                          size: 32,
+                          color: Colors.white,
+                        )
                         : null,
               ),
             ),
@@ -90,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextField(
               controller: nameController,
               enabled: isEditing,
+              style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 labelText: "Name",
                 border: OutlineInputBorder(),
@@ -101,6 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextField(
               controller: sloganController,
               enabled: isEditing,
+              style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 labelText: "Über mich",
                 border: OutlineInputBorder(),
@@ -112,6 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextField(
               controller: locationController,
               enabled: isEditing,
+              style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 labelText: "Standort",
                 border: OutlineInputBorder(),

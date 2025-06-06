@@ -37,7 +37,10 @@ class DummyUser {
 // Dummy Benutzer
 final List<DummyUser> dummyUsers = [
   DummyUser(id: 'u1', name: 'Anna'),
-  DummyUser(id: 'u2', name: 'Lukas'),
+  DummyUser(id: 'u2', name: 'Clara'),
+  DummyUser(id: 'u3', name: 'Sophia'),
+  DummyUser(id: 'u4', name: 'Anja'),
+  DummyUser(id: 'u5', name: 'Lukas'),
 ];
 
 // Dummy Pflanzen rund um Graz
@@ -60,7 +63,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Frischer Basilikum für deine Küche',
     standort: LatLng(47.0750, 15.4500), // Lendplatz
-    benutzerId: 'u1',
+    benutzerId: 'u3',
     bildPfad: 'assets/images/plants/basilikum.jpg',
     istFavorit: false,
   ),
@@ -71,7 +74,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Sehr pflegeleicht und heilend',
     standort: LatLng(47.0670, 15.4300), // Jakominiplatz
-    benutzerId: 'u1',
+    benutzerId: 'u5',
     bildPfad: 'assets/images/plants/aloe_vera.jpg',
     istFavorit: true,
   ),
@@ -82,7 +85,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Ideal für Tee!',
     standort: LatLng(47.0735, 15.4420), // Uni Graz
-    benutzerId: 'u1',
+    benutzerId: 'u3',
     bildPfad: 'assets/images/plants/minze.jpg',
     istFavorit: true,
   ),
@@ -93,7 +96,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ausgewachsen',
     beschreibung: 'Duftet wunderbar!',
     standort: LatLng(47.0690, 15.4600), // Murpark
-    benutzerId: 'u1',
+    benutzerId: 'u4',
     bildPfad: 'assets/images/plants/lavendel.jpg',
     istFavorit: false,
   ),
@@ -115,7 +118,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Pflegeleichter Hingucker mit langen, schmalen Blättern.',
     standort: LatLng(47.0725, 15.4480), // Schlossberg
-    benutzerId: 'u1',
+    benutzerId: 'u5',
     bildPfad: 'assets/images/plants/drachenbaum.jpg',
     istFavorit: false,
   ),
@@ -126,7 +129,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Wächst schnell nach – ideal für frische Küche.',
     standort: LatLng(47.0742, 15.4444), // Stadtpark
-    benutzerId: 'u1',
+    benutzerId: 'u3',
     bildPfad: 'assets/images/plants/petersilie.jpg',
     istFavorit: true,
   ),
@@ -137,7 +140,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Würzig duftender Küchenklassiker.',
     standort: LatLng(47.0701, 15.4499), // Murinsel
-    benutzerId: 'u1',
+    benutzerId: 'u4',
     bildPfad: 'assets/images/plants/thymian.jpg',
     istFavorit: false,
   ),
@@ -170,7 +173,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ausgewachsen',
     beschreibung: 'Wächst kräftig – ideal für Pizza-Fans!',
     standort: LatLng(47.0697, 15.4407), // Hauptplatz
-    benutzerId: 'u1',
+    benutzerId: 'u3',
     bildPfad: 'assets/images/plants/oregano.jpg',
     istFavorit: false,
   ),
@@ -181,7 +184,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Jungpflanze',
     beschreibung: 'Große weiche Blätter, wächst schnell.',
     standort: LatLng(47.0658, 15.4455), // Jakoministraße
-    benutzerId: 'u1',
+    benutzerId: 'u5',
     bildPfad: 'assets/images/plants/zimmerlinde.jpg',
     istFavorit: false,
   ),
@@ -192,7 +195,7 @@ final List<DummyPlant> dummyPlants = [
     pflanzenstadium: 'Ableger',
     beschreibung: 'Beruhigend und lecker im Tee.',
     standort: LatLng(47.0711, 15.4520), // Griesplatz
-    benutzerId: 'u1',
+    benutzerId: 'u4',
     bildPfad: 'assets/images/plants/zitronenmelisse.jpg',
     istFavorit: true,
   ),
