@@ -218,10 +218,6 @@ final List<DummyPlant> dummyPlants = [
     bildPfad: 'assets/images/plants/chili.jpg',
     istFavorit: true,
   ),
-];
-
-// Dummy Pflanzen Profil - Meine Angebote
-final List<DummyPlant> dummyOfferPlants = [
   DummyPlant(
     titel: 'Gummibaum',
     kategorie: 'Zimmerpflanze',

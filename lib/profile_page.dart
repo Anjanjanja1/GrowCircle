@@ -138,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: dummyOfferPlants.length, // Anzahl Angebote
+              itemCount: dummyPlants.length, // Anzahl Angebote
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 childAspectRatio: 3 / 4,
               ),
               itemBuilder: (context, index) {
-                final plant = dummyOfferPlants[index];
+                final plant = dummyPlants[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
