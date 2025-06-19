@@ -27,13 +27,45 @@ class _OfferPageState extends State<OfferPage> {
   String _pflanzenstadium = 'Ausgewachsen';
   String _kategorie = 'Zimmerpflanze';
 
-  Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
     }
+  }
+  
+  Future<void> _showImageSourceDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Foto auswählen"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: const Text("Kamera"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+                const Padding(padding: EdgeInsets.all(8.0)),
+                GestureDetector(
+                  child: const Text("Galerie"),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _getCoordinatesFromAddress() async {
@@ -122,26 +154,38 @@ class _OfferPageState extends State<OfferPage> {
           children: [
             // Foto-Upload
             GestureDetector(
-              onTap: _pickImage,
+              onTap: _showImageSourceDialog,
               child: Container(
-                height: 160,
+                height: 200,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade400, width: 1),
                 ),
-                child: Center(
-                  child:
-                      _image == null
-                          ? const Icon(
+                child: _image == null
+                    ? const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
                             Icons.camera_alt,
                             size: 40,
                             color: Colors.grey,
-                          )
-                          : Image.file(_image!, fit: BoxFit.cover),
-                ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            "Foto hinzufügen",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(_image!, fit: BoxFit.cover),
+                      ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
             // Titel
             const Text("Titel"),
@@ -262,7 +306,7 @@ class _OfferPageState extends State<OfferPage> {
                 Expanded(
                   child: TextField(
                     controller: _latitudeController,
-                    keyboardType: TextInputType.numberWithOptions(
+                    keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
                     decoration: const InputDecoration(
@@ -275,7 +319,7 @@ class _OfferPageState extends State<OfferPage> {
                 Expanded(
                   child: TextField(
                     controller: _longitudeController,
-                    keyboardType: TextInputType.numberWithOptions(
+                    keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
                     decoration: const InputDecoration(
@@ -296,6 +340,7 @@ class _OfferPageState extends State<OfferPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  foregroundColor: Colors.white,
                 ),
                 child: const Text("Tauschangebot erstellen"),
               ),
