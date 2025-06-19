@@ -24,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
   List<DummyPlant> _visiblePlants = [];
   Timer? _debounce;
 
-  final LatLng _defaultLocation = LatLng(47.0707, 15.4395);
+  final LatLng _defaultLocation = const LatLng(47.0707, 15.4395);
 
   LatLng get _effectiveCenter {
     return _currentPosition != null
@@ -37,7 +37,10 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     _determinePosition().then((_) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _updateVisiblePlants();
+        if (mounted && _currentPosition != null) {
+          _mapController.move(_effectiveCenter, _currentZoom);
+          _updateVisiblePlants();
+        }
       });
     });
   }
@@ -53,12 +56,14 @@ class _DashboardPageState extends State<DashboardPage> {
       final LatLngBounds? bounds = _mapController.camera.visibleBounds;
       if (bounds == null) return;
 
-      setState(() {
-        _visiblePlants =
-            dummyPlants.where((plant) {
-              return bounds.contains(plant.standort);
-            }).toList();
-      });
+      if (mounted) {
+        setState(() {
+          _visiblePlants =
+              dummyPlants.where((plant) {
+                return bounds.contains(plant.standort);
+              }).toList();
+        });
+      }
     } on StateError catch (e) {
       debugPrint("Map not ready yet, ignoring update: $e");
     }
@@ -74,7 +79,6 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _determinePosition() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      await Geolocator.openLocationSettings();
       return;
     }
 
@@ -86,9 +90,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
     if (permission == LocationPermission.deniedForever) return;
 
-    Position position = await Geolocator.getCurrentPosition();
-    setState(() => _currentPosition = position);
-    _mapController.move(_effectiveCenter, _currentZoom);
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        setState(() => _currentPosition = position);
+      }
+    } catch (e) {
+      debugPrint("Failed to get current position: $e");
+    }
   }
 
   void _updateZoom(double zoomChange) async {
@@ -104,10 +113,12 @@ class _DashboardPageState extends State<DashboardPage> {
       _mapController.move(center, z);
     }
 
-    setState(() {
-      _currentZoom = targetZoom;
-      searchRadius = _zoomToRadius(_currentZoom);
-    });
+    if (mounted) {
+      setState(() {
+        _currentZoom = targetZoom;
+        searchRadius = _zoomToRadius(_currentZoom);
+      });
+    }
   }
 
   double _radiusToZoom(double radiusKm) {
@@ -172,152 +183,155 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child:
-                                  _currentPosition == null
-                                      ? const Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            CircularProgressIndicator(),
-                                            SizedBox(height: 8),
-                                            Text("Standort wird ermittelt..."),
-                                          ],
-                                        ),
-                                      )
-                                      : FlutterMap(
-                                        mapController: _mapController,
-                                        options: MapOptions(
-                                          initialCenter: _effectiveCenter,
-                                          initialZoom: _currentZoom,
-                                          interactionOptions:
-                                              const InteractionOptions(
-                                                flags:
-                                                    InteractiveFlag.pinchZoom |
-                                                    InteractiveFlag.drag,
-                                              ),
-                                          onPositionChanged: (
-                                            MapPosition position,
-                                            bool hasGesture,
-                                          ) {
-                                            if (hasGesture &&
-                                                position.zoom != null) {
-                                              setState(() {
-                                                _currentZoom = position.zoom!;
-                                                searchRadius = _zoomToRadius(
-                                                  _currentZoom,
-                                                );
-                                              });
-                                            }
-                                            _onMapChanged();
-                                          },
-                                        ),
-                                        children: [
-                                          TileLayer(
-                                            urlTemplate:
-                                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                            subdomains: const ['a', 'b', 'c'],
-                                            userAgentPackageName:
-                                                'com.example.grow_circle',
+                              child: FlutterMap(
+                                mapController: _mapController,
+                                options: MapOptions(
+                                  initialCenter: _effectiveCenter,
+                                  initialZoom: _currentZoom,
+                                  interactionOptions: const InteractionOptions(
+                                    flags:
+                                        InteractiveFlag.pinchZoom |
+                                        InteractiveFlag.drag,
+                                  ),
+                                  onPositionChanged: (
+                                    MapPosition position,
+                                    bool hasGesture,
+                                  ) {
+                                    if (hasGesture && position.zoom != null) {
+                                      if (mounted) {
+                                        setState(() {
+                                          _currentZoom = position.zoom!;
+                                          searchRadius = _zoomToRadius(
+                                            _currentZoom,
+                                          );
+                                        });
+                                      }
+                                    }
+                                    _onMapChanged();
+                                  },
+                                ),
+                                children: [
+                                  TileLayer(
+                                    urlTemplate:
+                                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    subdomains: const ['a', 'b', 'c'],
+                                    userAgentPackageName:
+                                        'com.example.grow_circle',
+                                  ),
+                                  if (_currentPosition != null)
+                                    MarkerLayer(
+                                      markers: [
+                                        Marker(
+                                          width: 40.0,
+                                          height: 40.0,
+                                          point: _effectiveCenter,
+                                          child: const Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                            size: 36,
                                           ),
-                                          MarkerLayer(
-                                            markers: [
-                                              Marker(
-                                                width: 40.0,
-                                                height: 40.0,
-                                                point: _effectiveCenter,
-                                                child: const Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.red,
-                                                  size: 36,
-                                                ),
-                                              ),
-                                              ..._visiblePlants.map(
-                                                (plant) => Marker(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  point: plant.standort,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder:
-                                                              (context) =>
-                                                                  PlantDetailPage(
-                                                                    plant:
-                                                                        plant,
-                                                                  ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                            2,
-                                                          ),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                            color: Colors.white,
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color:
-                                                                    Colors
-                                                                        .black26,
-                                                                blurRadius: 6,
-                                                                offset: Offset(
-                                                                  0,
-                                                                  2,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                      child: ClipOval(
-                                                        child:
-                                                            plant.bildPfad !=
-                                                                    null
-                                                                ? (plant.bildPfad!
-                                                                        .startsWith(
-                                                                          'assets/',
-                                                                        ))
-                                                                    ? Image.asset(
-                                                                      plant
-                                                                          .bildPfad!,
-                                                                      fit:
-                                                                          BoxFit
-                                                                              .cover,
-                                                                      cacheWidth:
-                                                                          markerImageCacheSize,
-                                                                    )
-                                                                    : Image.file(
-                                                                      File(
-                                                                        plant
-                                                                            .bildPfad!,
-                                                                      ),
-                                                                      fit:
-                                                                          BoxFit
-                                                                              .cover,
-                                                                      cacheWidth:
-                                                                          markerImageCacheSize,
-                                                                    )
-                                                                : const Icon(
-                                                                  Icons
-                                                                      .local_florist,
-                                                                  size: 30,
-                                                                ),
-                                                      ),
-                                                    ),
+                                        ),
+                                        ..._visiblePlants.map(
+                                          (plant) => Marker(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            point: plant.standort,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder:
+                                                        (context) =>
+                                                            PlantDetailPage(
+                                                              plant: plant,
+                                                            ),
                                                   ),
+                                                );
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  2,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 6,
+                                                      offset: Offset(0, 2),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: ClipOval(
+                                                  child:
+                                                      plant.bildPfad != null
+                                                          ? (plant.bildPfad!
+                                                                  .startsWith(
+                                                                    'assets/',
+                                                                  ))
+                                                              ? Image.asset(
+                                                                plant.bildPfad!,
+                                                                fit:
+                                                                    BoxFit
+                                                                        .cover,
+                                                                cacheWidth:
+                                                                    markerImageCacheSize,
+                                                              )
+                                                              : Image.file(
+                                                                File(
+                                                                  plant
+                                                                      .bildPfad!,
+                                                                ),
+                                                                fit:
+                                                                    BoxFit
+                                                                        .cover,
+                                                                cacheWidth:
+                                                                    markerImageCacheSize,
+                                                              )
+                                                          : const Icon(
+                                                            Icons.local_florist,
+                                                            size: 30,
+                                                          ),
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
+                          if (_currentPosition == null)
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: const Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(height: 12),
+                                      Text(
+                                        "Standort wird ermittelt...",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           if (_currentPosition != null)
                             Positioned(
                               right: 12,
@@ -396,16 +410,18 @@ class _DashboardPageState extends State<DashboardPage> {
                         label: "${searchRadius.toStringAsFixed(1)} km",
                         activeColor: Colors.green,
                         onChanged: (double value) {
-                          setState(() {
-                            searchRadius = value;
-                            _currentZoom = _radiusToZoom(searchRadius);
-                            if (_currentPosition != null) {
-                              _mapController.move(
-                                _effectiveCenter,
-                                _currentZoom,
-                              );
-                            }
-                          });
+                          if (mounted) {
+                            setState(() {
+                              searchRadius = value;
+                              _currentZoom = _radiusToZoom(searchRadius);
+                              if (_currentPosition != null) {
+                                _mapController.move(
+                                  _effectiveCenter,
+                                  _currentZoom,
+                                );
+                              }
+                            });
+                          }
                         },
                       ),
                       const SizedBox(height: 12),
@@ -426,7 +442,7 @@ class _DashboardPageState extends State<DashboardPage> {
               // This is the performant, scrollable grid.
               // We add padding here to ensure it doesn't touch the screen edges.
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                 sliver:
                     _visiblePlants.isEmpty
                         ? const SliverToBoxAdapter(
