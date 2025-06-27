@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
+import 'dummy_data.dart';
 
 class LoginPage extends StatelessWidget {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'clara@example.com');
+  final _passwordController = TextEditingController(text: 'password123');
 
   LoginPage({super.key});
+
+  void _login(BuildContext context) {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    final user = dummyUsers.firstWhere(
+      (user) => user.email == email && user.password == password,
+      orElse: () => DummyUser(
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        favoritePlantIds: [],
+      ),
+    );
+
+    if (user.id.isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const DashboardPage(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('E-Mail oder Passwort falsch.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +84,6 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                // Passwort vergessen Link
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
@@ -72,15 +101,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Login - immer erfolgreich
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DashboardPage(),
-                        ),
-                      );
-                    },
+                    onPressed: () => _login(context),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -105,40 +126,35 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Google Login Logik (optional)
-                        },
-                        icon: Icon(
+                        onPressed: () {},
+                        icon: const Icon(
                           Icons.g_mobiledata,
-                          color: const Color.fromARGB(255, 54, 136, 244),
+                          color: Color.fromARGB(255, 54, 136, 244),
                         ),
-                        label: Text("Google"),
+                        label: const Text("Google"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.black,
-                          side: BorderSide(color: Colors.grey.shade400),
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                          side: BorderSide(color: Colors.grey),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Apple Login Logik (optional)
-                        },
-                        icon: Icon(Icons.apple, color: Colors.black),
-                        label: Text("Apple"),
+                        onPressed: () {},
+                        icon: const Icon(Icons.apple, color: Colors.black),
+                        label: const Text("Apple"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.black,
-                          side: BorderSide(color: Colors.grey.shade400),
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                          side: BorderSide(color: Colors.grey),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24), // Abstand hinzufügen
-                // Jetzt Registrieren Link
+                const SizedBox(height: 24),
                 Align(
                   alignment: Alignment.center,
                   child: Padding(

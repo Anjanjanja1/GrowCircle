@@ -4,6 +4,7 @@
 import 'package:latlong2/latlong.dart';
 
 class DummyPlant {
+  final String id;
   String titel;
   String kategorie;
   String lichtbedarf;
@@ -15,6 +16,7 @@ class DummyPlant {
   bool? istFavorit;
 
   DummyPlant({
+    required this.id,
     required this.titel,
     required this.kategorie,
     required this.lichtbedarf,
@@ -30,22 +32,26 @@ class DummyPlant {
 class DummyUser {
   final String id;
   final String name;
+    final String email;
+  final String password;
+  final List<String> favoritePlantIds;
 
-  DummyUser({required this.id, required this.name});
+  DummyUser({required this.id, required this.name, required this.email, required this.password, this.favoritePlantIds = const []});
 }
 
 // Dummy Benutzer
 final List<DummyUser> dummyUsers = [
-  DummyUser(id: 'u1', name: 'Anna'),
-  DummyUser(id: 'u2', name: 'Clara'),
-  DummyUser(id: 'u3', name: 'Sophia'),
-  DummyUser(id: 'u4', name: 'Anja'),
-  DummyUser(id: 'u5', name: 'Lukas'),
+  DummyUser(id: 'u1', name: 'Anna', email: 'anna@example.com', password: 'password123',favoritePlantIds: [],),
+  DummyUser(id: 'u2', name: 'Clara', email: 'clara@example.com', password: 'password123',favoritePlantIds: ['1', '3'], ),
+  DummyUser(id: 'u3', name: 'Sophia', email: 'sophia@example.com', password: 'password123',favoritePlantIds: ['2'], ),
+  DummyUser(id: 'u4', name: 'Anja', email: 'anja@example.com', password: 'password123',favoritePlantIds: ['4'], ),
+  DummyUser(id: 'u5', name: 'Lukas', email: 'lukas@example.com', password: 'password123',favoritePlantIds: ['5'], ),
 ];
 
 // Dummy Pflanzen rund um Graz
 final List<DummyPlant> dummyPlants = [
   DummyPlant(
+    id: '1',
     titel: 'Monstera',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Mittel',
@@ -57,6 +63,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '2',
     titel: 'Basilikum',
     kategorie: 'Kräuter',
     lichtbedarf: 'Viel',
@@ -68,6 +75,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '3',
     titel: 'Aloe Vera',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Viel',
@@ -79,6 +87,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '4',
     titel: 'Minze',
     kategorie: 'Kräuter',
     lichtbedarf: 'Mittel',
@@ -90,6 +99,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '5',
     titel: 'Lavendel',
     kategorie: 'Gartenpflanze',
     lichtbedarf: 'Viel',
@@ -101,6 +111,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '6',
     titel: 'Efeutute',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Wenig',
@@ -112,6 +123,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '7',
     titel: 'Drachenbaum',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Mittel',
@@ -123,6 +135,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '8',
     titel: 'Petersilie',
     kategorie: 'Kräuter',
     lichtbedarf: 'Viel',
@@ -134,6 +147,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '9',
     titel: 'Thymian',
     kategorie: 'Kräuter',
     lichtbedarf: 'Viel',
@@ -145,6 +159,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '10',
     titel: 'Kaktus',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Viel',
@@ -156,6 +171,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '11',
     titel: 'Tomate',
     kategorie: 'Gartenpflanze',
     lichtbedarf: 'Viel',
@@ -167,6 +183,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '12',
     titel: 'Oregano',
     kategorie: 'Kräuter',
     lichtbedarf: 'Viel',
@@ -178,6 +195,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '13',
     titel: 'Zimmerlinde',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Mittel',
@@ -189,6 +207,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '14',
     titel: 'Zitronenmelisse',
     kategorie: 'Kräuter',
     lichtbedarf: 'Mittel',
@@ -200,6 +219,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '15',
     titel: 'Salbei',
     kategorie: 'Kräuter',
     lichtbedarf: 'Viel',
@@ -211,6 +231,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: false,
   ),
   DummyPlant(
+    id: '16',
     titel: 'Chili',
     kategorie: 'Gartenpflanze',
     lichtbedarf: 'Viel',
@@ -222,6 +243,7 @@ final List<DummyPlant> dummyPlants = [
     istFavorit: true,
   ),
   DummyPlant(
+    id: '17',
     titel: 'Gummibaum',
     kategorie: 'Zimmerpflanze',
     lichtbedarf: 'Mittel',
@@ -233,6 +255,7 @@ final List<DummyPlant> dummyPlants = [
     bildPfad: 'assets/images/plants/gummibaum.jpg',
   ),
   DummyPlant(
+    id: '18',
     titel: 'Amaryllis',
     kategorie: 'Samen',
     lichtbedarf: 'Mittel',
@@ -244,6 +267,7 @@ final List<DummyPlant> dummyPlants = [
     bildPfad: 'assets/images/plants/amaryllis.jpg',
   ),
   DummyPlant(
+    id: '19',
     titel: 'Banane',
     kategorie: 'Sonstige',
     lichtbedarf: 'Viel',
@@ -254,6 +278,7 @@ final List<DummyPlant> dummyPlants = [
     bildPfad: 'assets/images/plants/banane.jpg',
   ),
   DummyPlant(
+    id: '20',
     titel: 'Feigenbaum',
     kategorie: 'Sonstige',
     lichtbedarf: 'Viel',

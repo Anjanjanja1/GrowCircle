@@ -118,6 +118,7 @@ class _OfferPageState extends State<OfferPage> {
     }
 
     final neuesPflanze = DummyPlant(
+      id: DateTime.now().toString(),
       titel: titel,
       kategorie: _kategorie,
       lichtbedarf: _lichtbedarf,

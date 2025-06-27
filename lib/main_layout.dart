@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grow_circle/favorite_page.dart';
 import 'dashboard_page.dart';
 import 'offer_page.dart';
 import 'search_page.dart';
@@ -31,6 +32,9 @@ class MainLayout extends StatelessWidget {
         break;
       case 3:
         targetPage = InboxPage();
+        break;
+      case 4:
+        targetPage = FavoritePage();
         break;
       default:
         targetPage = DashboardPage();
