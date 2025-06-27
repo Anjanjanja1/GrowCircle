@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrowCircle Konzept</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .modal-img {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #img-modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #img-modal img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #383838;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #4A5C48;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid transparent;
+            color: #5D705C;
+        }
+
+        .nav-link.active {
+            border-left-color: #4A5C48;
+            background-color: #E9E6DC;
+            color: #4A5C48;
+            font-weight: 600;
+        }
+
+        .nav-link:hover:not(.active) {
+            background-color: #F4F1E9;
+            color: #4A5C48;
+        }
+
+        .persona-tab {
+            background-color: #F4F1E9;
+            color: #5D705C;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .persona-tab.active {
+            background-color: #4A5C48;
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .persona-tab:hover:not(.active) {
+            background-color: #E9E6DC;
+            color: #4A5C48;
+        }
+
+        .ui-example-block {
+            background-color: #FFFFFF;
+            border: 1px solid #E0D9CC;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .ui-example-block h4 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #4A5C48;
+        }
+
+        .ui-example-block .mock-ui {
+            background-color: #fcfaf5;
+            border: 1px dashed #C1B8A4;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .mock-ui img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        ul.styled-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul.styled-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #6C8D6A;
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        ul.styled-list.check-circle li::before {
+            content: '✔';
+            color: #34D399;
+        }
+
+        ul.styled-list.x-circle li::before {
+            content: '✖';
+            color: #EF4444;
+        }
+
+        ul.styled-list.leaf-emoji li::before {
+            content: '🌿';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.handshake-emoji li::before {
+            content: '🤝';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.target-emoji li::before {
+            content: '🎯';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.building-emoji li::before {
+            content: '🏛️';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.no-entry-emoji li::before {
+            content: '🚫';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.check-emoji li::before {
+            content: '✅';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        ul.styled-list.cabinet-emoji li::before {
+            content: '🗄️';
+            font-size: 1rem;
+            top: 0.15rem;
+        }
+
+        .test-grid-item {
+            background-color: #F4F1E9;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #4A5C48;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<div id="img-modal" class="fixed hidden">
+    <img src="" alt="Enlarged view">
+</div>
+
+
+<body class="bg-[#FDFBF5]">
+
+    <div class="flex min-h-screen">
+        <aside class="w-80 bg-[#F4F1E9] p-6 flex-shrink-0 hidden md:block sticky top-0 h-screen overflow-y-auto">
+            <h1 class="text-3xl font-extrabold text-[#4A5C48] mb-10 leading-tight">GrowCircle</h1>
+            <nav id="desktop-nav" class="space-y-3">
+                <a href="#overview" class="nav-link block p-3 rounded-lg text-lg">APP: Wozu soll es sie geben?</a>
+                <a href="#lastenheft" class="nav-link block p-3 rounded-lg text-lg">Lastenheft Themen</a>
+                <a href="#ui-ux" class="nav-link block p-3 rounded-lg text-lg">UI/UX Beispiele & Erklärung</a>
+                <a href="#tech" class="nav-link block p-3 rounded-lg text-lg">Entwicklungsparadigma</a>
+                <a href="#security" class="nav-link block p-3 rounded-lg text-lg">IT Security Konzept</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-6 md:p-12">
+            <div class="max-w-6xl mx-auto">
+
+                <header class="mb-16 text-center">
+                    <h1 class="text-5xl md:text-6xl font-extrabold text-[#4A5C48] leading-tight">GrowCircle</h1>
+                    <p class="text-xl md:text-2xl text-[#FDFBF5] mt-3 font-light"> ...
+
+                    </p>
+                </header>
+
+                <hr class="border-t-2 border-[#D1C7B8] my-12">
+
+                <section id="overview" class="mb-16 space-y-10 scroll-mt-24">
+                    <h2 class="text-4xl font-bold text-[#4A5C48]">APP: Wozu soll es sie geben?</h2>
+                    <div class="card">
+                        <h3 class="text-2xl font-semibold mb-2 text-[#4A5C48]">Die Grundidee</h3>
+                        <p class="text-gray-700 text-lg">GrowCircle ist eine mobile Plattform, die es Nutzer:innen
+                            können Pflanzen und Ableger unkompliziert anbieten, tauschen und sich mit anderen
+                            Mitgliedern der Community vernetzen.
+                            Anstatt Pflanzen wegzuwerfen, fördert die App eine Kultur des Tauschens, Verschenkens und
+                            Spendens.
+                            Sie verbindet Menschen mit einer gemeinsamen Leidenschaft und schafft einen
+                            <strong>nachhaltigen
+                                Kreislauf für Pflanzen</strong>.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="card">
+                            <h3 class="text-2xl font-semibold mb-2 text-[#4A5C48]">Unsere Hauptziele</h3>
+                            <ul class="space-y-4 text-lg styled-list">
+                                <li class="leaf-emoji">
+                                    <span><strong>Nachhaltige Nutzung:</strong> Pflanzen retten und einen Kreislauf des
+                                        Gebens schaffen.</span>
+                                </li>
+                                <li class="handshake-emoji">
+                                    <span><strong>Lebendige Community:</strong> Einen Ort für Austausch von Pflanzen,
+                                        Wissen und Kontakten aufbauen.</span>
+                                </li>
+                                <li class="target-emoji">
+                                    <span><strong>Vielfältige Nutzergruppen:</strong> Von Hobbygärtner:innen bis zu
+                                        Botaniker:innen jeden unterstützen.</span>
+                                </li>
+                                <li class="building-emoji">
+                                    <span><strong>Öffentliche Beteiligung:</strong> Institutionen wie Botanische Gärten
+                                        zur Wissensweitergabe einbinden.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3 class="text-2xl font-semibold mb-2 text-[#4A5C48]">Abgrenzung & Fokus</h3>
+                            <p class="mb-6 text-gray-700 text-lg">Die App konzentriert sich klar auf den Kern der Idee:
+                            </p>
+                            <ul class="space-y-4 text-lg styled-list">
+                                <li class="no-entry-emoji">
+                                    <span><strong>Kein E-Commerce:</strong> Ausschließlich Tausch/Verschenken, kein
+                                        kommerzieller Verkauf.</span>
+                                </li>
+                                <li class="no-entry-emoji">
+                                    <span><strong>Nur Pflanzen:</strong> Kein Zubehör wie Gartengeräte oder
+                                        Dünger.</span>
+                                </li>
+                                <li class="check-emoji">
+                                    <span><strong>Fokus auf Community:</strong> Nachhaltigkeit und soziale Werte stehen
+                                        im Vordergrund.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-t-2 border-[#D1C7B8] my-12">
+
+                <section id="lastenheft" class="mb-20 scroll-mt-24">
+                    <h2 class="text-4xl font-bold text-[#4A5C48]">Lastenheft Themen</h2>
+
+                    <div id="lastenheft-personas" class="mb-16 mt-10 scroll-mt-24">
+                        <h3 class="text-3xl font-bold text-[#4A5C48] mb-6">Unsere Personas verstehen</h3>
+                        <p class="mb-8 text-gray-600 text-lg">Um eine benutzerfreundliche App zu entwickeln, haben wir
+                            unsere heterogene Zielgruppe durch vier exemplarische Personas abgebildet.</p>
+
+                        <div class="card p-6">
+                            <div id="persona-tabs" class="flex flex-wrap gap-3 mb-6 border-b border-gray-200 pb-4">
+                                <button data-persona="erika"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base active shadow-sm">👵
+                                    Oma Erika</button>
+                                <button data-persona="tobias"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">🕵️‍♂️
+                                    Tobias</button>
+                                <button data-persona="max"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">🌍
+                                    Max</button>
+                                <button data-persona="bauer"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">👨‍🔬
+                                    Herr Bauer</button>
+                            </div>
+
+                            <div id="persona-content" class="p-4 bg-[#FDFBF5] rounded-lg border border-[#E9E6DC]">
+                                <div data-persona-content="erika" class="">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">Oma Erika, 72 - "Die Garten-Omi"
+                                    </h4>
+                                    <p class="text-base text-gray-500 mb-6">Rentnerin, geringe Technikkenntnisse, hohe
+                                        Pflanzenkenntnisse</p>
+                                    <div class="grid md:grid-cols-2 gap-6 text-lg">
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Motive:</h5>
+                                            <p>Ableger verschenken, Freude an Pflanzen weitergeben, soziale Kontakte
+                                                knüpfen.</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Bedürfnisse:</h5>
+                                            <p>Einfache Navigation, große Schrift, klare Anleitungen, Hilfe-Funktion.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-persona-content="tobias" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">Tobias, 31 - "Der Pflanzenjäger"
+                                    </h4>
+                                    <p class="text-base text-gray-500 mb-6">IT-Berater, hohe Technik- &
+                                        Pflanzenkenntnisse</p>
+                                    <div class="grid md:grid-cols-2 gap-6 text-lg">
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Motive:</h5>
+                                            <p>Seltene Pflanzen finden, Tausch-Community als Projekt sehen, andere
+                                                motivieren, Daten sammeln.</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Bedürfnisse:</h5>
+                                            <p>Erweiterte Suche, Favoriten, Bewertungssystem, Tauschverlauf,
+                                                Badge-System.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-persona-content="max" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">Max, 35 - "Der umweltbewusste
+                                        Tauschfan"</h4>
+                                    <p class="text-base text-gray-500 mb-6">Sozialarbeiter, mittlere Technikkenntnisse
+                                    </p>
+                                    <div class="grid md:grid-cols-2 gap-6 text-lg">
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Motive:</h5>
+                                            <p>Keine Pflanzen wegwerfen, nur Bio verwenden, nachhaltig leben und
+                                                tauschen.</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Bedürfnisse:</h5>
+                                            <p>Filter für "Bio" oder "ungespritzt", Verschenk-Option,
+                                                Herkunfts-Hinweise.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-persona-content="bauer" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">Herr Bauer, 42 - "Der Botaniker"
+                                    </h4>
+                                    <p class="text-base text-gray-500 mb-6">Mitarbeiter im Botanischen Garten, hohe
+                                        Pflanzenkenntnisse</p>
+                                    <div class="grid md:grid-cols-2 gap-6 text-lg">
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Motive:</h5>
+                                            <p>Pflanzen aus dem Garten spenden, Kontakt zu Pflanzenfreunden pflegen.</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-[#5D705C] mb-2">Bedürfnisse:</h5>
+                                            <p>Kennzeichnung als "öffentliche Institution", System zur Verwaltung
+                                                mehrerer Pflanzen, Option zur gezielten Abgabe.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="lastenheft-stakeholder" class="mb-16 mt-10 scroll-mt-24">
+                        <h3 class="text-3xl font-bold text-[#4A5C48] mb-6">Stakeholders</h3>
+
+                        <div class="card p-6">
+                            <div id="stakeholder-tabs" class="flex flex-wrap gap-3 mb-6 border-b border-gray-200 pb-4">
+                                <button data-stakeholder="devs"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base active shadow-sm">👩‍💻
+                                    Entwickler:innen</button>
+                                <button data-stakeholder="productowner"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">🎯
+                                    Product Owner</button>
+                                <button data-stakeholder="datenschutz"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">🔒
+                                    Datenschutz & Recht</button>
+                                <button data-stakeholder="appstore"
+                                    class="persona-tab px-5 py-2 rounded-full font-medium text-base shadow-sm">📱
+                                    App-Stores</button>
+                            </div>
+
+                            <div id="stakeholder-content" class="p-4 bg-[#FDFBF5] rounded-lg border border-[#E9E6DC]">
+                                <div data-stakeholder-content="devs">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">👩‍💻 Entwickler:innen</h4>
+                                    <p class="text-base text-gray-600 mb-4">Technische Umsetzung und Wartung der App
+                                    </p>
+                                    <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+                                        <li><strong>Wichtig:</strong> Klare Anforderungen, effiziente Workflows,
+                                            dokumentierte APIs.</li>
+                                    </ul>
+                                </div>
+
+                                <div data-stakeholder-content="productowner" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">🎯 Product Owner</h4>
+                                    <p class="text-base text-gray-600 mb-4">Projektverantwortlich für Vision, Budget und
+                                        Nutzerfokus</p>
+                                    <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+                                        <li><strong>Wichtig:</strong> Die App erfüllt reale Nutzerbedürfnisse, bleibt im
+                                            Budget und ist nachhaltig.</li>
+                                    </ul>
+                                </div>
+
+                                <div data-stakeholder-content="datenschutz" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">🔒 Datenschutz &
+                                        Rechtsberater:innen</h4>
+                                    <p class="text-base text-gray-600 mb-4">Sicherung rechtlicher Rahmenbedingungen</p>
+                                    <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+                                        <li><strong>Wichtig:</strong> DSGVO-Konformität, sicherer Umgang mit
+                                            Standortdaten und Fotos.</li>
+                                    </ul>
+                                </div>
+
+                                <div data-stakeholder-content="appstore" class="hidden">
+                                    <h4 class="text-2xl font-bold text-[#4A5C48] mb-2">📱 App-Store Plattformen</h4>
+                                    <p class="text-base text-gray-600 mb-4">Google Play & Apple App Store</p>
+                                    <ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+                                        <li><strong>Wichtig:</strong> App-Qualität, Richtlinieneinhaltung, Stabilität &
+                                            Inhaltsrichtlinien.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="lastenheft-features" class="mb-16 scroll-mt-24">
+                        <h3 class="text-3xl font-bold text-[#4A5C48] mb-6">Funktionen & Anforderungen</h3>
+                        <p class="mt-4 mb-8 text-gray-600 text-lg">Die detaillierten Anforderungen bilden die Grundlage
+                            für die Entwicklung und stellen sicher, dass die App die Bedürfnisse aller Stakeholder
+                            erfüllt. Sie sind in funktionale und nicht-funktionale Anforderungen unterteilt.</p>
+
+                        <div class="card p-6 mb-8">
+                            <h4 class="text-2xl font-semibold mb-5 text-[#4A5C48]">Schwerpunkte der funktionalen
+                                Anforderungen</h4>
+                            <div class="relative h-72 md:h-80 lg:h-96 w-full mx-auto">
+                                <canvas id="featuresChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="card">
+                                <h4 class="text-2xl font-semibold mb-4 text-[#4A5C48]">Funktionale Anforderungen</h4>
+                                <ul class="space-y-2 list-disc list-inside text-gray-700 text-lg">
+                                    <li>Registrierung / Login (E-Mail, Google, Apple)</li>
+                                    <li>Profilfunktionen (Name, Bild, Standort, Bewertungen)</li>
+                                    <li>Angebote erstellen (Titel, Foto, Beschreibung)</li>
+                                    <li>Umfassende Suchfunktion (GPS, Text, Filter)</li>
+                                    <li>In-App-Chat für Tauschdetails</li>
+                                    <li>Direkte Kameranutzung für Fotos</li>
+                                    <li>Push-Benachrichtigungen</li>
+                                    <li>Bewertungssystem (1-5 Sterne)</li>
+                                </ul>
+                            </div>
+                            <div class="card">
+                                <h4 class="text-2xl font-semibold mb-4 text-[#4A5C48]">Nicht-funktionale Anforderungen
+                                </h4>
+                                <ul class="space-y-2 list-disc list-inside text-gray-700 text-lg">
+                                    <li><strong>Benutzerfreundlichkeit:</strong> Intuitiv, einfach, große Buttons.</li>
+                                    <li><strong>Performance:</strong> Schnelle Ladezeiten, flüssiger Upload.</li>
+                                    <li><strong>Zuverlässigkeit:</strong> Stabil, keine Datenverluste.</li>
+                                    <li><strong>Plattformunabhängigkeit:</strong> Android & iOS.</li>
+                                    <li><strong>Datenschutz & Sicherheit:</strong> DSGVO-konform, HTTPS.</li>
+                                    <li><strong>Barrierefreiheit:</strong> Anpassbare Schrift, Kontraste.</li>
+                                    <li><strong>Skalierbarkeit:</strong> Stabil bei wachsender Nutzerzahl.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-t-2 border-[#D1C7B8] my-12">
+
+                <section id="ui-ux" class="mb-20 scroll-mt-24">
+                    <h2 class="text-4xl font-bold text-[#4A5C48]">UI/UX Beispiele und Erklärung</h2>
+                    <p class="mt-4 mb-10 text-gray-600 text-lg">
+                        Die folgenden Mock-Ups veranschaulichen unsere Designphilosophie:</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="ui-example-block">
+                            <h4>Login</h4>
+                            <p class="text-sm text-gray-700 mb-4">Ein einfacher und sicherer Zugang zur App via E-Mail,
+                                Google oder Apple-ID.</p>
+                            <div class="mock-ui">
+                                <img src="images/login.png" alt="Login Mockup">
+                            </div>
+                        </div>
+                        <div class="ui-example-block">
+                            <h4>Dashboard & Angebote</h4>
+                            <p class="text-sm text-gray-700 mb-4">Übersichtliche Darstellung der aktuellen
+                                Pflanzenangebote in der Nähe mit intuitiver Navigation.</p>
+                            <div class="mock-ui">
+                                <img src="images/dashboard.png" alt="Dashboard Mockup 1">
+                                <img src="images/dashboard-A.png" alt="Dashboard Mockup 2">
+                            </div>
+                        </div>
+                        <div class="ui-example-block">
+                            <h4>Angebot erstellen</h4>
+                            <p class="text-sm text-gray-700 mb-4">Ein geführter, schrittweiser Prozess zum einfachen
+                                Hochladen neuer Pflanzenangebote.</p>
+                            <div class="mock-ui">
+                                <img src="images/angebot.png" alt="Offer Mockup 1">
+                                <img src="images/angebot2.png" alt="Offer Mockup 2">
+                            </div>
+                        </div>
+                        <div class="ui-example-block">
+                            <h4>In-App-Chat</h4>
+                            <p class="text-sm text-gray-700 mb-4">Direkter und unkomplizierter Austausch zwischen
+                                Tauschpartnern zur Vereinbarung von Details.</p>
+                            <div class="mock-ui">
+                                <img src="images/chat.png" alt="Chat Mockup">
+                            </div>
+                        </div>
+                        <div class="ui-example-block">
+                            <h4>Profil</h4>
+                            <p class="text-sm text-gray-700 mb-4">Verwalten von persönlichen Angeboten,
+                                sehen und Anpassen von Einstellungen.</p>
+                            <div class="mock-ui">
+                                <img src="images/profil.png" alt="Profile Mockup">
+                            </div>
+                        </div>
+                        <div class="ui-example-block">
+                            <h4>Suchen & Filtern</h4>
+                            <p class="text-sm text-gray-700 mb-4">Pflanzen suchen und finden, mit
+                                flexiblen Such- und Filteroptionen.</p>
+                            <div class="mock-ui">
+                                <img src="images/search.png" alt="Search Mockup">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="border-t-2 border-[#D1C7B8] my-12">
+
+                <section id="tech" class="mb-20 scroll-mt-24">
+                    <h2 class="text-4xl font-bold text-[#4A5C48]">Entwicklungsparadigma</h2>
+                    <p class="mt-4 mb-10 text-gray-600 text-lg">
+                        Die Realisierung der mobilen Anwendung "GrowCircle" basiert auf einer fundierten Entscheidung
+                        für das
+                        <strong>Cross-Platform App Entwicklungsparadigma</strong>. Diese Wahl ist das Ergebnis einer
+                        detaillierten Analyse
+                        der Projektanforderungen und einer sorgfältigen Abwägung gegenüber alternativen
+                        Entwicklungsansätzen. Als konkretes
+                        Framework kommt <strong>Flutter</strong> zum Einsatz.
+                    </p>
+
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-semibold mb-6 text-[#4A5C48]">Paradigma im Vergleich</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                            <div class="border-2 border-gray-200 p-6 rounded-xl flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#383838] mb-2">Native Apps</h4>
+                                <p class="text-sm text-gray-600">Separate Entwicklung für iOS und Android mit
+                                    Swift/Java. Höchste Performance,
+                                    aber doppelte Wartungskosten.</p>
+                            </div>
+
+                            <div
+                                class="border-2 border-[#4A5C48] p-6 rounded-xl bg-[#E9E6DC] flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#4A5C48] mb-2">Cross-Platform (Flutter)<br><span
+                                        class="block text-sm font-normal">(Unsere Wahl)</span></h4>
+                                <p class="text-sm text-[#4A5C48]">Hohe Performance, UI-Flexibilität, native
+                                    Geräteintegration mit nur einer
+                                    Codebasis.</p>
+                            </div>
+
+                            <div class="border-2 border-gray-200 p-6 rounded-xl flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#383838] mb-2">Cross-Platform (Xamarin)</h4>
+                                <p class="text-sm text-gray-600">C#-basiert mit UI-Bridge. Stabil, aber eingeschränkte
+                                    UI-Freiheit und sinkende
+                                    Community.</p>
+                            </div>
+
+                            <div class="border-2 border-gray-200 p-6 rounded-xl flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#383838] mb-2">Web Native (React Native)</h4>
+                                <p class="text-sm text-gray-600">JavaScript/React mit nativen Komponenten. Gute
+                                    Community, aber teilweise
+                                    instabil bei Kamera und Maps.</p>
+                            </div>
+
+                            <div class="border-2 border-gray-200 p-6 rounded-xl flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#383838] mb-2">Hybrid (Cordova)</h4>
+                                <p class="text-sm text-gray-600">HTML/CSS/JS in WebView. Schlechte Performance, kein
+                                    echtes „Native“-Gefühl und
+                                    wenig Hardwarezugriff.</p>
+                            </div>
+
+                            <div class="border-2 border-gray-200 p-6 rounded-xl flex flex-col justify-between">
+                                <h4 class="font-bold text-xl text-[#383838] mb-2">Progressive Web Apps (PWA)</h4>
+                                <p class="text-sm text-gray-600">Offline-fähige Web-Apps. Eingeschränkter Zugriff auf
+                                    Kamera & GPS, kein voller
+                                    App-Store-Support.</p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold mt-10 mb-5 text-[#4A5C48]">Vorteile von Flutter für GrowCircle
+                        </h3>
+                        <ul class="space-y-3 styled-list check-circle text-lg">
+                            <li><strong>Effizienz und Ressourcenoptimierung:</strong> Reduzierter Entwicklungsaufwand,
+                                schnelle Iterationen.</li>
+                            <li><strong>Native Performance & UX:</strong> Flüssige Bedienung, kurze Ladezeiten.</li>
+                            <li><strong>Visuelle Konsistenz & Flexibilität:</strong> Einheitliches Design – unabhängig
+                                vom Gerät.</li>
+                            <li><strong>Umfassender Gerätezugriff:</strong> Kamera, GPS, Benachrichtigungen voll
+                                integriert.</li>
+                            <li><strong>Skalierbarkeit & Zukunftssicherheit:</strong> Web/Desktop-Support ohne neue
+                                Codebasis.</li>
+                        </ul>
+                    </div>
+                </section>
+
+
+                <hr class="border-t-2 border-[#D1C7B8] my-12">
+
+                <section id="security" class="mb-20 scroll-mt-24">
+                    <h2 class="text-4xl font-bold text-[#4A5C48]">IT Security & Testing</h2>
+                    <p class="mt-4 mb-10 text-gray-600 text-lg">
+                        Für den langfristigen Erfolg von GrowCircle sind <strong>Vertrauen, Datenschutz und
+                            Stabilität</strong> zentrale Grundlagen. Wir setzen auf ein ganzheitliches
+                        Sicherheitskonzept sowie systematische Tests zur Qualitätssicherung.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-16">
+                        <div class="card">
+                            <h3 class="text-2xl font-semibold mb-5 text-[#4A5C48]">Sicherheitskonzept</h3>
+                            <ul class="space-y-4 styled-list lock-emoji text-lg">
+                                <li><strong>HTTPS:</strong> Verschlüsselte Datenübertragung zum Schutz der
+                                    Kommunikation.</li>
+                                <li><strong>Zugriffsrechte bei Bedarf:</strong> Kamera, Standort & Push nur bei aktiver
+                                    Freigabe.</li>
+                                <li><strong>Datensparsamkeit:</strong> Speicherung nur unbedingt notwendiger Daten mit
+                                    Löschoption.</li>
+                                <li><strong>DSGVO-Konformität:</strong> Transparente, rechtssichere Verarbeitung &
+                                    Einwilligung.</li>
+                                <li><strong>Serverstandort:</strong> Hosting ausschließlich auf zertifizierten,
+                                    europäischen Servern.</li>
+                                <li><strong>OWASP-Guidelines:</strong> Schutz vor unsicherer Speicherung,
+                                    Zugriffskontrolle & Co.</li>
+                            </ul>
+                        </div>
+
+                        <div class="card">
+                            <h3 class="text-2xl font-semibold mb-5 text-[#4A5C48]">Teststrategie</h3>
+                            <ul class="space-y-4 styled-list pen-emoji text-lg">
+                                <li><strong>Funktionale Tests:</strong> Registrierung, Angebote, Suche, Chat und Profil
+                                    werden einzeln geprüft.</li>
+                                <li><strong>Integrationstests:</strong> Zusammenspiel von Kamera, GPS, Chat &
+                                    Benachrichtigungen.</li>
+                                <li><strong>Usability-Tests:</strong> Fokusgruppen prüfen Navigation, Schriftgrößen,
+                                    Barrierefreiheit.</li>
+                                <li><strong>Manuelle Gerätetests:</strong> Realtests auf verschiedenen Android-Versionen
+                                    & Displaygrößen.</li>
+                                <li><strong>Performance-Checks:</strong> Ladezeiten, Uploads, UI-Reaktion unter realen
+                                    Bedingungen.</li>
+                                <li><strong>Security Audits:</strong> Prüfung auf OWASP Mobile Schwachstellen.</li>
+                                <li><strong>Beta-Phase:</strong> Verteilung über Google Play zur Sammlung von
+                                    Nutzerfeedback.</li>
+                                <li><strong>Zukunft:</strong> Aufbau von automatisierten Tests via GitHub Actions
+                                    (CI/CD).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-gray-600 text-lg mb-4">
+                            Unser Ziel: <strong>Eine sichere, benutzerfreundliche & skalierbare App ab Version
+                                1.0</strong> – basierend auf einem soliden Test- und Sicherheitsfundament.
+                        </p>
+                    </div>
+                </section>
+
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            //Stakeholder Tabs Interaction
+            const stakeholderTabs = document.querySelectorAll('[data-stakeholder]');
+            const stakeholderContents = document.querySelectorAll('[data-stakeholder-content]');
+
+            stakeholderTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.stakeholder;
+
+                    stakeholderTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    stakeholderContents.forEach(content => {
+                        if (content.dataset.stakeholderContent === target) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            //Set initial active stakeholder tab
+            if (stakeholderTabs.length > 0) {
+                stakeholderTabs[0].click(); //Simulate click on the first tab
+            }
+
+            //Persona Tabs Interaction
+            const personaTabs = document.querySelectorAll('.persona-tab');
+            const personaContents = document.querySelectorAll('[data-persona-content]');
+
+            personaTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.persona;
+
+                    personaTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    personaContents.forEach(content => {
+                        if (content.dataset.personaContent === target) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            //Set initial active persona tab
+            if (personaTabs.length > 0) {
+                personaTabs[0].click(); //Simulate click on the first tab
+            }
+
+            //Chart.js for Features
+            const ctx = document.getElementById('featuresChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['User Experience (4)', 'Tauschabwicklung (3)', 'Community Features (1)'],
+                        datasets: [{
+                            label: 'Anzahl der Anforderungen',
+                            data: [4, 3, 1],
+                            backgroundColor: ['#6C8D6A', '#A4B49C', '#D1C7B8'],
+                            borderColor: ['#4A5C48', '#5D705C', '#8F8173'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Verteilung der Funktionalen Anforderungen',
+                                font: {
+                                    size: 18,
+                                    weight: 'bold',
+                                    family: 'Inter, sans-serif'
+                                },
+                                color: '#4A5C48',
+                                padding: { top: 10, bottom: 20 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    afterLabel: function (context) {
+                                        const breakdown = {
+                                            0: [
+                                                "• Registrierung / Login",
+                                                "• Profilfunktionen",
+                                                "• Push-Benachrichtigungen",
+                                                "• Bewertungssystem"
+                                            ],
+                                            1: [
+                                                "• Angebote erstellen",
+                                                "• In-App-Chat",
+                                                "• Kamera nutzen"
+                                            ],
+                                            2: [
+                                                "• Suchfunktion"
+                                            ]
+                                        };
+                                        return breakdown[context.dataIndex];
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0,
+                                    color: '#6B7280'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Anzahl der Anforderungen',
+                                    color: '#4A5C48',
+                                    font: { size: 14, weight: '500' }
+                                }
+                            },
+                            y: {
+                                ticks: { color: '#6B7280' },
+                                grid: { color: '#E0D9CC' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            //Smooth scrolling for navigation links
+            document.querySelectorAll('#desktop-nav a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    document.querySelectorAll('#desktop-nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            //Set active navigation link on scroll
+            const sections = document.querySelectorAll('section[id]');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop - 100 && pageYOffset < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                document.querySelectorAll('#desktop-nav a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            //Trigger the initial active state for the first section
+            if (sections.length > 0) {
+                const firstSectionId = sections[0].getAttribute('id');
+                const firstNavLink = document.querySelector(`#desktop-nav a[href="#${firstSectionId}"]`);
+                if (firstNavLink) {
+                    firstNavLink.classList.add('active');
+                }
+            }
+        });
+        //Image Zoom Modal
+        document.querySelectorAll('.mock-ui img').forEach(img => {
+            img.classList.add('modal-img');
+            img.addEventListener('click', () => {
+                const modal = document.getElementById('img-modal');
+                modal.querySelector('img').src = img.src;
+                modal.style.display = 'flex';
+            });
+        });
+
+        document.getElementById('img-modal').addEventListener('click', () => {
+            document.getElementById('img-modal').style.display = 'none';
+        });
+
+    </script>
+</body>
+
+</html>
