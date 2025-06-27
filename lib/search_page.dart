@@ -12,10 +12,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String selectedCategory = 'Zimmerpflanze';
+  String selectedCategory = 'Alle';
+  String selectedStadium = 'Alle';
+  String selectedLichtbedarf = 'Alle';
   String searchQuery = '';
+  final currentUser = dummyUsers.firstWhere((user) => user.id == 'u2');
 
   final List<String> categories = [
+    'Alle',
     'Zimmerpflanze',
     'Kräuter',
     'Ableger',
@@ -24,13 +28,29 @@ class _SearchPageState extends State<SearchPage> {
     'Sonstige',
   ];
 
+  final List<String> stadiumOptionen = [
+    'Alle',
+    'Samen',
+    'Ableger',
+    'Jungpflanze',
+    'Ausgewachsen',
+  ];
+
+  final List<String> lichtOptionen = [
+    'Alle',
+    'Viel',
+    'Mittel',
+    'Wenig',
+  ];
+
   List<DummyPlant> get filteredPlants {
     return dummyPlants.where((plant) {
-      final matchesCategory = plant.kategorie == selectedCategory;
-      final matchesSearch = plant.titel.toLowerCase().contains(
-        searchQuery.toLowerCase(),
-      );
-      return matchesCategory && matchesSearch;
+      final matchesCategory = selectedCategory == 'Alle' || plant.kategorie == selectedCategory;
+      final matchesStadium = selectedStadium == 'Alle' || plant.pflanzenstadium == selectedStadium;
+      final matchesLicht = selectedLichtbedarf == 'Alle' || plant.lichtbedarf == selectedLichtbedarf;
+      final matchesSearch = plant.titel.toLowerCase().contains(searchQuery.toLowerCase());
+
+      return matchesCategory && matchesStadium && matchesLicht && matchesSearch;
     }).toList();
   }
 
@@ -62,144 +82,102 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: selectedCategory,
-                items:
-                    categories
-                        .map(
-                          (cat) =>
-                              DropdownMenuItem(value: cat, child: Text(cat)),
-                        )
-                        .toList(),
+                items: categories.map((cat) => DropdownMenuItem(value: cat, child: Text(cat))).toList(),
                 onChanged: (value) => setState(() => selectedCategory = value!),
                 decoration: InputDecoration(
-                  labelText: "Kategorie auswählen",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
+                  labelText: "Kategorie",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: selectedLichtbedarf,
+                      items: lichtOptionen.map((licht) => DropdownMenuItem(value: licht, child: Text(licht))).toList(),
+                      onChanged: (value) => setState(() => selectedLichtbedarf = value!),
+                      decoration: InputDecoration(
+                        labelText: "☀️ Lichtbedarf",
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: selectedStadium,
+                      items: stadiumOptionen.map((stadium) => DropdownMenuItem(value: stadium, child: Text(stadium))).toList(),
+                      onChanged: (value) => setState(() => selectedStadium = value!),
+                      decoration: InputDecoration(
+                        labelText: "🌱 Stadium",
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               Expanded(
-                child:
-                    filteredPlants.isEmpty
-                        ? const Center(
-                          child: Text("Keine passenden Angebote gefunden"),
-                        )
-                        : GridView.builder(
-                          itemCount: filteredPlants.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 12,
-                                crossAxisSpacing: 12,
-                                childAspectRatio: 3 / 4,
-                              ),
-                          itemBuilder: (context, index) {
-                            final plant = filteredPlants[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => PlantDetailPage(plant: plant),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade100,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            const BorderRadius.vertical(
-                                              top: Radius.circular(12),
-                                            ),
-                                        child:
-                                            plant.bildPfad != null
-                                                ? (plant.bildPfad!.startsWith(
-                                                      'assets/',
-                                                    )
-                                                    ? Image.asset(
-                                                      plant.bildPfad!,
-                                                      fit: BoxFit.cover,
-                                                      width: double.infinity,
-                                                    )
-                                                    : Image.file(
-                                                      File(plant.bildPfad!),
-                                                      fit: BoxFit.cover,
-                                                      width: double.infinity,
-                                                      errorBuilder:
-                                                          (
-                                                            _,
-                                                            __,
-                                                            ___,
-                                                          ) => const Icon(
-                                                            Icons.broken_image,
-                                                            size: 40,
-                                                          ),
-                                                    ))
-                                                : const Center(
-                                                  child: Icon(
-                                                    Icons.local_florist,
-                                                    size: 40,
-                                                  ),
-                                                ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              plant.titel,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(
-                                              plant.istFavorit == true
-                                                  ? Icons.favorite
-                                                  : Icons.favorite_border,
-                                              color:
-                                                  plant.istFavorit == true
-                                                      ? Colors.red
-                                                      : Colors.grey,
-                                              size: 22,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                plant.istFavorit =
-                                                    !(plant.istFavorit ??
-                                                        false);
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+                child: filteredPlants.isEmpty
+                    ? const Center(child: Text("Keine passenden Angebote gefunden"))
+                    : GridView.builder(
+                        itemCount: filteredPlants.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 3 / 4,
                         ),
+                        itemBuilder: (context, index) {
+                          final plant = filteredPlants[index];
+                          final isFavorite = currentUser.favoritePlantIds.contains(plant.id);
+                          return GestureDetector(
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlantDetailPage(plant: plant))),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                      child: plant.bildPfad != null
+                                          ? (plant.bildPfad!.startsWith('assets/')
+                                              ? Image.asset(plant.bildPfad!, fit: BoxFit.cover, width: double.infinity)
+                                              : Image.file(File(plant.bildPfad!), fit: BoxFit.cover, width: double.infinity))
+                                          : const Icon(Icons.local_florist, size: 40),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            plant.titel,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border, color: isFavorite ? Colors.red : Colors.grey),
+                                          onPressed: () => setState(() {
+                                            isFavorite ? currentUser.favoritePlantIds.remove(plant.id) : currentUser.favoritePlantIds.add(plant.id);
+                                          }),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
               ),
             ],
           ),
